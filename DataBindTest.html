@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html app>
+<head>
+    <meta charset="utf-8"/>
+    <title>test</title>
+    <script type="text/javascript" src="./js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="./js/language/DataBind.js"></script>
+</head>
+<body>
+<div id="sv">
+    {name} : {age}
+    <p class="text">Msg.name</p>
+    <p class="text">Msg.age</p>
+    <p class="text">Msg.age + Msg.age</p>
+</div>
+</body>
+<script type="text/javascript">
+    var Msg = {
+        name: 'Andrew',
+        age: 18
+    };
+
+    setInterval(function () {
+        Msg.age++;
+    }, 1000);
+
+    //调用方式：
+    DataBind.controller(document.getElementById('sv'), function (obj) {
+        obj.name = "jack";
+        obj.age = 18;
+        setInterval(function () {
+            obj.age++;
+        }, 1000);
+    });
+
+    function setLanguage () {
+        var context = $('body');
+        var msgList = $('.text', context);
+        msgList.each(function (i, e) {
+            console.log(i + " : " + e.innerHTML);
+            var msg = $(e).html();
+            if (msg && msg.length > 4 && msg.substr(0, 4) == 'Msg.')
+                $(e).html(eval('(' + msg + ')'));
+        });
+    }
+    setLanguage();
+
+    var keys = [
+        { a: 1, b: 2 },
+        { a: 2, b: 3 }
+    ];
+    for(var k of keys) {
+        console.log(k.get('a'));
+    }
+</script>
+</html>

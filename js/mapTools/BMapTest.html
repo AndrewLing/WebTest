@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>地图测试</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <!--引用百度地图API-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=20&ak=xeBemF45MwVCkp1Df3tG8PkG"></script>
+    <script type="text/javascript" src="./js/MapUtil.js"></script>
+    <!--引用高德地图API-->
+    <!--<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=77c9006122a14e0948e43e1a7a5441d7"></script>-->
+    <!--<script type="text/javascript" src="js/mapTools/MapUtil.js"></script>-->
+
+    <style type="text/css">
+        body {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .anchorBL, .amap-logo, .amap-copyright {
+            display:none;
+        }
+    </style>
+</head>
+
+<body>
+<!--百度地图容器-->
+<div style="height:100%;border:#ccc solid 1px;font-size:12px" id="map"></div>
+</body>
+
+<script type="text/javascript">
+    var t = MapUtil.Config('map', {
+        theme: 'normal',
+        center: [104.065745, 30.657457],
+        zoomLevel:15,
+        mapType: 1
+    }).Instance();
+
+    // 随机向地图添加10个标注
+    var markers = [];
+//    var bounds = t.option.map.getBounds();
+//    var lngSpan = bounds.re - bounds.we;
+//    var latSpan = bounds.qe - bounds.ve;
+    var mapBounds = t.option.map.getBounds();
+    var sw = mapBounds.getSouthWest();
+    var ne = mapBounds.getNorthEast();
+    var lngSpan = Math.abs(sw.lng - ne.lng);
+    var latSpan = Math.abs(ne.lat - sw.lat);
+    for (var i = 0; i < 1; i++) {
+//        var marker = new BMap.Marker(new BMap.Point(bounds.we + lngSpan * (Math.random() * 0.7 + 0.15), bounds.ve + latSpan * (Math.random() * 0.7 + 0.15)));
+
+
+        // 创建图标对象
+//        var icon = new BMap.Icon('./images/mapPoint/map_pointXXX-min.png', new BMap.Size(22, 36), {
+//        var icon = new BMap.Icon('./images/mapPoint/map_point1X0-min.png', new BMap.Size(32, 43), {
+//        var icon = new BMap.Icon('./images/mapPoint/map_point2X0-min.png', new BMap.Size(32, 32), {
+//            offset: new BMap.Size(10, 28),// 指定定位位置
+//            offset: new BMap.Size(16, 36),// 指定定位位置
+//            offset: new BMap.Size(16, 30),// 指定定位位置
+//            imageOffset: new BMap.Size(0, 0)// 设置图片偏移
+//        });
+//        marker.setIcon(icon);
+
+//        var label = new BMap.Label('电站A<span style="position: absolute; left: -35px; top: 4.5px;font-size: 10px;color:#fff;">1232</span>', {offset: new BMap.Size(37, 5)});
+//        label.setStyle({
+//            color: '#08c',
+//            fontSize: '14px',
+//            border: '1px solid #ccc',
+//            textAlign: 'center'
+//        });
+//        marker.setLabel(label);
+
+        // 创建标注对象并添加到地图
+//        t.option.map.addOverlay(marker);
+
+        // 监听标注事件
+//        marker.addEventListener("click", function (e) {
+//                alert("您点击了标注");
+//            alert(e.point.lng + ", " + e.point.lat);
+//        });
+        // TODO 可托拽的标注
+
+        /**
+         * MapUtil接口调用实例
+         */
+//        var point = MapUtil.createPoint(104.767523 + (Math.random() * 1), 28.998213 + (Math.random() * 1));
+        var point = MapUtil.createPoint(104.065745, 30.657457);
+//        var point = MapUtil.createPoint(sw.lng + lngSpan * (Math.random() * 1), ne.lat - latSpan * (Math.random() * 1));
+        var icon = MapUtil.createIcon('./images/mapPoint/map_point2X0-min.png', {  width: 32, height: 32, offset: [-10, -28] });
+//        var label = MapUtil.createLabel('电站' + i + '<span style="position: absolute; left: -35px; top: 4.5px;font-size: 10px;color:#fff;">1232</span>', {
+//            offset: [37, 5],
+//            style: {
+//                color: '#08c',
+//                fontSize: '14px',
+//                border: '1px solid #ccc',
+//                textAlign: 'center'
+//            }
+//        });
+        var marker = MapUtil.createMarker(point, {icon: icon, label: '电站' + i + '<span style="position: absolute; left: 4px; top: 12.15px;font-size: 10px;color:#fff;">1232</span>', title: '电站' + i, event: {
+            type: 'click',
+            process: function(e) {
+                console.info(e);
+                console.info(e.lnglat);
+//                alert("您点击了标注" + e.target.$c.title);
+//                alert(e.lnglat.lng + ", " + e.lnglat.lat);
+                return false;
+            }
+        }});
+//        MapUtil.addOverlay(t.option.map, marker);
+        markers.push(marker);
+    }
+
+    MapUtil.addCluster(t.option.map, markers);
+
+</script>
+</html>

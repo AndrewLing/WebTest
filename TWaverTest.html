@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>TWaver</title>
+    <script type="text/javascript" src="js/topo/lib/twaver.js"></script>
+    <script type="application/javascript">
+        function init() {
+            var box = new twaver.ElementBox();
+
+            var node = new twaver.Node();
+            node.setName("from");
+            node.setLocation(100, 100);
+            box.add(node);
+
+            var node2 = new twaver.Node();
+            node2.setName("to");
+            node2.setLocation(300, 300);
+            box.add(node2);
+
+            var link = new twaver.Link(node, node2);
+            link.setName("Hello TWaver");
+            link.setToolTip("<b>Hello TWaver</b>");
+            box.add(link);
+
+            var network = new twaver.network.Network(box);
+            var tree = new twaver.controls.Tree(box);
+            var table = new twaver.controls.Table(box);
+            var tablePane = new twaver.controls.TablePane(table);
+
+            createColumn(table, 'Name', 'name', 'accessor', 'string');
+            createColumn(table, 'Id', 'id', 'accessor', 'string');
+
+            var rightSplit = new twaver.controls.SplitPane(network, tablePane, 'vertical', 0.7);
+            var mainSplitPane = new twaver.controls.SplitPane(tree, rightSplit, 'horizontal', 0.3);
+            var networkDom = mainSplitPane.getView();
+            networkDom.style.width = "100%";
+            networkDom.style.height = "100%";
+            document.body.appendChild(networkDom);
+            network.getView().style.backgroundColor = "#f3f3f3";
+            network.getView().style.cursor = "hand";
+
+            window.onresize = function () {
+                mainSplitPane.invalidate();
+            };
+        }
+        function createColumn(table, name, propertyName, propertyType, valueType) {
+            var column = new twaver.Column(name);
+            column.setName(name);
+            column.setPropertyName(propertyName);
+            column.setPropertyType(propertyType);
+            if (valueType)
+                column.setValueType(valueType);
+            table.getColumnBox().add(column);
+            return column;
+        }
+    </script>
+</head>
+<body onload="init()" style="margin: 0;"></body>
+</html>

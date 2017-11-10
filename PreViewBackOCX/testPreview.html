@@ -1,0 +1,126 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0031)http://171.7.21.121/MyHtml.html -->
+<HTML>
+	<HEAD>
+		<TITLE>预览Demo</TITLE>
+		<META http-equiv=keywords content=keyword1,keyword2,keyword3>
+		<META http-equiv=description content="this is my page">
+		<META http-equiv=content-type content="text/html; charset=UTF-8">
+		<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+		<META content="MSHTML 6.00.2900.6058" name=GENERATOR>
+		<style type="text/css">
+        td {
+        	border:1px solid blue;
+        }
+       
+        </style>
+		<script> 
+		function init(){
+			document.getElementById('xml').value='';
+                        var RealTimePlayOcx=document.getElementById("RealTimePlayOcx");
+                        RealTimePlayOcx.SetPtzServer("<?xml version='1.0'?><PTZServe><ServIP>10.22.48.30</ServIP><ServPort>7000</ServPort><Priority>50</Priority></PTZServe>");//10.22.48.30是平台中云台管理服务器的IP地址
+		        RealTimePlayOcx.SetWndNum(4);
+                        RealTimePlayOcx.PtzSpeed(2);
+                }
+		function applyXML(){
+			var RealTimePlayOcx=document.getElementById("RealTimePlayOcx");
+			var xml=document.getElementById('xml').value;
+                        RealTimePlayOcx.SelWindow(0);
+			RealTimePlayOcx.StartTask_Preview_InWnd(xml,0);
+		}
+		
+		function applyXMLs(){
+			var RealTimePlayOcx=document.getElementById("RealTimePlayOcx");
+			var xml=document.getElementById('xml').value;
+			RealTimePlayOcx.StartTask_Preview_Group(xml,0);
+		}
+		
+		function print(msg){
+			var console=document.getElementById('console');
+			var oldMsg=console.value;
+			console.value=oldMsg+'\n'+msg;
+		}
+		</script>
+
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireStartRealPlay(iWindowID)">   //预览监控点时触发事件
+            print('FireStartRealPlay('+iWindowID+')');
+        </script>
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireSelectWindow(lWndIndex)">   //单击窗口时触发事件
+			print('FireSelectWindow('+lWndIndex+')');
+        </script>
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireStopRealPlay(iWindowID)">   //停止预览监控点时触发事件
+    	   print('FireStopRealPlay('+iWindowID+')');
+        </script>
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireChangeWindow(lFrom,lTo)">  
+            print('FireChangeWindow('+lFrom+','+lTo+')');
+        </script>
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireStartRecord(lWindowId)">  
+    	    print('FireStartRecord('+lWindowId+')');
+        </script>
+
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireStopRecord(iWindowID)">
+        	print('FireStopRecord('+iWindowID+')');
+        </script>
+
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FirePTZCtrl(lWindowId, lCtrlId, lSpeed)">
+    	    print('FirePTZCtrl('+lWindowId+', '+lCtrlId+', '+lSpeed+')');
+        </script>
+
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireRecordParam(xmlParament,lWindowId)">
+        	print('FireRecordParam('+xmlParament+','+lWindowId+')');
+        </script>
+
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FireCatchPicParam(xmlParament,lWindowId)">
+        	print('FireCatchPicParam('+xmlParament+','+lWindowId +')');
+        </script>
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FirePtzDisable(iWindowID)">
+    	    print('FirePtzDisable('+iWindowID+')');
+        </script>
+		<script language="javascript" for="RealTimePlayOcx"
+			event="FirePtzEnable(iWindowID)">
+    	   print('FirePtzEnable('+iWindowID+')');
+        </script>
+	</HEAD>
+	<BODY onload="init()">
+		<TABLE style="width: 100%; height: 100%">
+			<TBODY>
+				<TR>
+					<TD style="width: 40%; height: 80%">
+						预览XML：
+						<br>
+						<textarea style="width: 100%; height: 90%" name="xml" id="xml"></textarea>
+						<br>
+						<INPUT type="button" value="设置预览控件XML" onclick="applyXML()">
+					</TD>
+					<TD style="width: 60%; height: 80%">
+						<object classid="clsid:D5E14042-7BF6-4E24-8B01-2F453E8154D7"
+							id="RealTimePlayOcx" width="100%" height="100%"
+							name="RealTimePlayOcx">
+							<param name="theme" value="blue">
+                                                        <param name="showType" value="1">
+						</object>
+					</TD>
+				</TR>
+				<TR>
+					<TD colspan="2" style="width: 100%; height: 20%;">
+						控制台：
+						<br>
+						<textarea style="width: 100%; height: 100%" name="console"
+							id="console"></textarea>
+					</TD>
+				</TR>
+			</TBODY>
+		</TABLE>
+	</BODY>
+</HTML>
+

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Demo page</title>
+    <style>
+        #output {
+            position: absolute;
+            left: 45%;
+            top: 30%;
+            width: 256px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+
+<div id="output"></div>
+
+<script src="./js/jquery/jquery.js"></script>
+<script type="text/javascript" src="./js/qrcode/qrcode.js"></script>
+<script type="text/javascript" src="./js/qrcode/jquery.qrcode.js"></script>
+<script>
+    $(function () {
+        var str = "";
+        $('#output').qrcode({
+            text: str
+        });
+    })
+</script>
+
+</body>
+</html>

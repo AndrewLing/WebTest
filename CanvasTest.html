@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Canvas Test</title>
+    <script src="./js/jquery/jquery.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "Microsoft YaHei", "Century Gothic", "Arial", "宋体", "Tahoma", "Verdana", "SimSun", serif;
+        }
+        .container {
+            width: 800px;
+            margin: 0 auto;
+        }
+        .canvas-container {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+            border: 1px solid #c6c6c6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <canvas id="canvas" class="canvas-container" width="600" height="600">不支持 Canvas ！！！</canvas>
+    <p>
+        <label for="score">计分：</label>
+        <span id="score">0</span>
+    </p>
+    <p>
+        <label for="speed">速度：</label>
+        <span id="speed">0</span>
+    </p>
+</div>
+
+<script>
+    function Game (id) {
+
+        this.init = function () {
+            this.initData();
+            this.draw();
+            this.bindEvents();
+        };
+
+        this.initData = function () {
+            var canvas = document.getElementById(id);
+            if (canvas && canvas.getContext) {
+                this.ctx = canvas.getContext('2d');
+            }
+            this.foodNode = null;
+            this.size = canvas.width || $(canvas).width();
+            this.columns = 50;
+            this.direction = 0;
+            this.speed = 10;
+            this.bodyNodes = [];
+
+            var rdx = Math.round(Math.random() * (this.columns - 1));
+            var rdy = Math.round(Math.random() * (this.columns - 1));
+
+            this.bodyNodes.push({
+                x: rdx, y: rdy
+            });
+        };
+
+        this.draw = function () {
+            this.clear();
+            this.drawBG();
+            this.drawBody();
+            this.drawFood();
+        };
+
+        this.clear = function () {
+            this.ctx.clearRect(0, 0, this.size, this.size);
+        };
+
+        this.drawBG = function () {
+            var _this = this;
+
+            var x = 0, y = 0, size = _this.size / _this.columns;
+            _this.ctx.strokeStyle = "rgba(124,124,124,0.1)";
+            for (var i = 0; i < _this.columns; i++) {
+                y = i * size;
+                for (var j = 0; j < _this.columns; j++) {
+                    x = j * size;
+                   _this.ctx.strokeRect(x, y, size, size);
+                }
+            }
+        };
+
+        this.drawBody = function () {
+            var _this = this;
+
+            var r = 0, g = 0, b = 0;
+            var size = _this.size / _this.columns;
+            _this.ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + ",0.5)";
+
+            var nodes = _this.bodyNodes;
+            $.each(nodes, function (i, node) {
+                _this.ctx.fillRect(node.x * size, node.y * size, size, size);
+            });
+        };
+
+        this.drawFood = function () {
+            var _this = this;
+
+            var r = 255, g = 0, b = 0;
+            var size = _this.size / _this.columns;
+            _this.ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + ",1)";
+            if (_this.foodNode) {
+                _this.ctx.strokeRect(_this.foodNode.x * size, _this.foodNode.y * size, size, size);
+            } else {
+                var rdx = Math.round(Math.random() * (_this.columns - 1));
+                var rdy = Math.round(Math.random() * (_this.columns - 1));
+
+                if (_this.Utils.contains(_this.bodyNodes, {x: rdx, y: rdy})) {
+                    _this.drawFood();
+                } else {
+                    _this.ctx.strokeRect(rdx * size, rdy * size, size, size);
+                    _this.foodNode = {x: rdx, y: rdy};
+                }
+            }
+        };
+
+        this.bindEvents = function () {
+            this.directionController();
+            this.timerController();
+        };
+
+        this.directionController = function () {
+            var _this = this;
+            document.body.onkeydown = function (e) {
+                switch (e.keyCode) {
+                    case 37: // 左
+                        if (_this.direction === 1) return;
+                        _this.direction = -1;
+                        break;
+                    case 38: // 上
+                        if (_this.direction === 10) return;
+                        _this.direction = -10;
+                        break;
+                    case 39: // 右
+                        if (_this.direction === -1) return;
+                        _this.direction = 1;
+                        break;
+                    case 40: // 下
+                        if (_this.direction === -10) return;
+                        _this.direction = 10;
+                        break;
+                    default:
+                        _this.direction = 0;
+                        break;
+                }
+                _this.move();
+            };
+        };
+
+        this.timerController = function () {
+            var _this = this;
+            if (_this.timer) {
+                clearInterval(_this.timer);
+            }
+            _this.timer = setInterval(function () {
+                _this.move();
+            }, 6000 / _this.speed);
+            $('#speed').text(_this.speed);
+        };
+
+        this.move = function () {
+            var _this = this;
+
+            var headNode = _this.bodyNodes[0];
+            var node = {x: headNode.x, y: headNode.y};
+
+            switch (_this.direction) {
+                case -1: // 左
+                    node.x = headNode.x - 1;
+                    break;
+                case -10: // 上
+                    node.y = headNode.y - 1;
+                    break;
+                case 1: // 右
+                    node.x = headNode.x + 1;
+                    break;
+                case 10: // 下
+                    node.y = headNode.y + 1;
+                    break;
+                default:
+                    break;
+            }
+            if (_this.direction && _this.Utils.contains(_this.bodyNodes, node)) {
+                alert("咬着自己了！！！");
+//                console.log("咬着自己了！！！");
+                if (_this.timer) {
+                    clearInterval(_this.timer);
+                }
+            }
+            else if (node.x < 0 || node.x > _this.columns - 1 || node.y < 0 || node.y > _this.columns - 1) {
+                alert("出界了！！！");
+//                console.log("撞墙了！！！");
+                if (_this.timer) {
+                    clearInterval(_this.timer);
+                }
+            }
+            else {
+                _this.bodyNodes.pop();
+                _this.bodyNodes.unshift(node);
+
+                _this.food();
+                _this.draw();
+            }
+        };
+
+        this.food = function () {
+            var _this = this;
+            var headNode = _this.bodyNodes[0];
+            if (_this.Utils.equals(headNode, _this.foodNode)) {
+                _this.bodyNodes.push(_this.foodNode);
+                _this.foodNode = null;
+                var score = _this.bodyNodes.length - 1;
+                $('#score').text(score);
+                if (score % 10 === 0) {
+                    _this.speed += 10;
+                    _this.timerController();
+                }
+            }
+        };
+
+        this.Utils = {
+            contains: function (arr, o) {
+                var _this = this;
+                if (!arr || !o) return false;
+
+                var flag = false;
+                $.each(arr, function () {
+                    if (!this) return true;
+                    if (_this.equals(this, o)) {
+                        flag = true;
+                        return false;
+                    }
+                });
+                return flag;
+            },
+            equals: function (o1, o2) {
+                if (o1 === o2) return true;
+                if (!o1 || !o2) return false;
+                return o1.x === o2.x && o1.y === o2.y;
+            }
+        };
+    }
+
+    $(function () {
+        var game = new Game("canvas");
+        game.init();
+    });
+</script>
+</body>
+</html>

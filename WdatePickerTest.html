@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>WdatePicker Test</title>
+
+    <script type="text/javascript" src="./js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery/plugins/WdatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/jquery/plugins/WdatePicker/DatePicker.js"></script>
+</head>
+<body style="overflow: hidden;">
+<div id="main_view" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: #8f906e; overflow: auto;">
+    <form style="height: 1000px; margin-top: 100px;">
+        <label for="date00">时间：</label>
+        <!--<input id="date00" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'dd', maxDate: '2017-01-%ld', startDate: '2017-01-01', alwaysUseStartDate: true})"/>-->
+        <!--<input id="date01" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'yyyy-MM-dd'})"/>-->
+        <!--<input id="date02" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'HH:mm:ss'})"/>-->
+        <!--<input id="date03" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'yyyy-MM'})"/>-->
+        <!--<input id="date04" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'MM-dd'})"/>-->
+        <!--<input id="date05" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'yyyy-dd'})"/>-->
+        <!--<input id="date05" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'HH:mm'})"/>-->
+        <!--<input id="date05" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'mm:ss'})"/>-->
+        <!--<input id="date05" name="date" onfocus="DatePicker({skin: 'gs', dateFmt: 'HH:ss'})"/>-->
+        <!--<label for="date1">时间2：</label>-->
+        <!--<input id="date1" name="date" onfocus="DatePicker({dateFmt: 'yyyy年MM月dd日 HH:mm:ss'})"/>-->
+        <!--<input id="send_btn" type="submit" value="Send"/>-->
+
+        <input onfocus="DatePicker({skin: 'black', dateFmt: 'yyyy-MM-dd HH:mm:ss', isShowClear: true, isShowToday: true, isShowOK: true, qsEnabled: true})" class="Wdate"/>
+        <input onfocus="DatePicker({skin: 'black', dateFmt: 'yyyy-MM-dd', isShowClear: true, isShowToday: true, isShowOK: true, qsEnabled: true})" class="Wdate"/>
+        <input onfocus="DatePicker({skin: 'black', dateFmt: 'yyyy-MM-dd HH:mm:ss'})" class="Wdate"/>
+        <input onfocus="DatePicker({skin: 'black', dateFmt: 'yyyy-MM-dd HH:mm', isShowClear: true, isShowToday: true, isShowOK: true, qsEnabled: true})" class="Wdate"/>
+        <input onfocus="DatePicker({skin: 'black', dateFmt: 'HH:mm:ss'})" class="Wdate"/>
+        <input onfocus="DatePicker({skin: 'black', dateFmt: 'yyyy-MM'})" class="Wdate"/>
+        <input onfocus="DatePicker({skin: 'black', dateFmt: 'yyyy'})" class="Wdate"/>
+    </form>
+
+    <!--<label for="date3">-->
+        <!--<span>事件测试：</span>-->
+        <!--<input id="date3" name="date"/>-->
+    <!--</label>-->
+</div>
+
+<script type="text/javascript">
+    mac = {};
+    mac.Lang = 'zh';
+//    document.getElementById('send_btn').addEventListener('click', function (event) {
+//        alert('send button is clicked');
+//        console.log(event);
+//        var date = document.getElementById('date');
+//        console.log(date.value);
+//    });
+
+    $(function () {
+        $('#date00').val('15');
+
+        $('#date3').on('click', function () {
+            DatePicker({
+                dateFmt: 'yyyy-MM-dd HH:00', onpicking: function () {
+                    console.log("onpicking --> ", $dp.cal.newdate);
+                }, onpicked: function () {
+                    console.log("onpicked --> ", $dp.cal.newdate);
+                    console.log(this);
+                    $(this).blur();
+                }, ychanging: function () {
+                    console.log("ychanging --> ", $dp.cal.date['y']);
+                }, Mchanging: function () {
+                    console.log("Mchanging --> ", $dp.cal.date['M']);
+                }, dchanging: function () {
+                    console.log("dchanging --> ", $dp.cal.date['d']);
+                }, Hchanging: function () {
+                    console.log("Hchanging --> ", $dp.cal.date['H']);
+                }, mchanging: function () {
+                    console.log("mchanging --> ", $dp.cal.date['m']);
+                }, schanging: function () {
+                    console.log("schanging --> ", $dp.cal.date['s']);
+                }, ychanged: function () {
+                    console.log("ychanged --> ", $dp.cal.date['y']);
+                }, Mchanged: function () {
+                    console.log("Mchanged --> ", $dp.cal.date['M']);
+                }, dchanged: function () {
+                    console.log("dchanged --> ", $dp.cal.date['d']);
+                }, Hchanged: function () {
+                    console.log("Hchanged --> ", $dp.cal.date['H']);
+                }, mchanged: function () {
+                    console.log("mchanged --> ", $dp.cal.date['m']);
+                }, schanged: function () {
+                    console.log("schanged --> ", $dp.cal.date['s']);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

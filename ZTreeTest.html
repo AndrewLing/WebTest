@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/jquery/jquery.js"></script>
+    <style>
+        #container {
+            padding: 0;
+            margin: 0;
+            color: #05070F;
+        }
+
+        .items {
+            border: 1px solid #cccccc;
+            display: none;
+        }
+
+        .items-0 {
+            display: block;
+        }
+
+        .icon {
+            width: 15px;
+            height: 15px;
+            background-color: red;
+            border: 1px solid #000;
+            display: inline-block;
+        }
+
+        .icon.open {
+            background-color: transparent;
+        }
+        .icon.leaf {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <ul class="hhTree">
+        <ul class="items items-0" style="font-size: 10pt;">
+            <li class="item" style="padding-left:0px">
+                <div class="detail">
+                    <span class="icon" style=""></span>
+
+                    <p class="line" style="margin-left:0px">
+                        <span class="name" level="1" orgno="2" title="托管域">托管域</span>
+                    </p>
+                </div>
+                <ul class="items items-1" style="font-size: 10pt;">
+                    <li class="item" style="padding-left:13px">
+                        <div class="detail"><span class="icon"></span>
+
+                            <p class="line" style="margin-left:0px">
+                                <span class="name" level="2" orgno="467BAC65A7AEC77F842973B2426FFC23"
+                                      title="czl">czl</span>
+                            </p>
+                        </div>
+                        <ul class="items items-2" style="font-size: 10pt;">
+                            <li class="item" style="padding-left:31px">
+                                <div class="detail"><span class="icon leaf"></span>
+
+                                    <p class="line" style="margin-left:0px">
+                                        <span class="name" level="3" orgno="2891C213242E2647D7C68A1E91FE1C88"
+                                              title="czl-4">czl-4</span>
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="item" style="padding-left:31px">
+                                <div class="detail"><span class="icon leaf"></span>
+
+                                    <p class="line" style="margin-left:0px">
+                                        <span class="name" level="3" orgno="2A2E0A3461B2CC80E3F40F87FE558597"
+                                              title="czl-5">czl-5</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="item" style="padding-left:13px">
+                        <div class="detail">
+                            <span class="icon" style=""></span>
+
+                            <p class="line" style="margin-left:0px">
+                                <span class="name" level="2" orgno="7E7836CCA60D81AD1CCBFECDB9BCFA39"
+                                      title="czl2">czl2</span>
+                            </p>
+                        </div>
+                        <ul class="items items-2" style="font-size: 10pt;">
+                            <li class="item" style="padding-left:31px">
+                                <div class="detail"><span class="icon leaf"></span>
+
+                                    <p class="line" style="margin-left:0px">
+                                        <span class="name" level="3" orgno="24A22663C94345BB063C1CF68CA83084"
+                                              title="czl2-2">czl2-2</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </ul>
+</div>
+
+<script>
+    $(function () {
+
+//        $('.item').click(function (e) {
+//            var items = $(this).parentsUntil('items-0');
+//            console.log(items);
+//            items.each(function (i, t) {
+//                if ($(t).hasClass('items')) {
+//                    $(t).append('+');
+//                }
+//            });
+//            return false;
+//        });
+
+        $('.hhTree').delegate('span.icon', 'click', function () {
+            $(this).toggleClass('open');
+            $(this).parent().siblings('ul.items').toggle('fast');
+        });
+
+        /**
+         *
+         * @param groupId
+         */
+        function openNode(groupId) {
+            var items = $('span[orgno=' + groupId + ']', '.hhTree').parentsUntil('.items-0');
+            items.each(function (i, t) {
+                if ($(t).hasClass('items')) {
+                    $('span.icon', $(t).parent()).eq(0).trigger('click');
+                }
+            });
+        }
+
+        openNode('2A2E0A3461B2CC80E3F40F87FE558597');
+    });
+</script>
+</body>
+</html>

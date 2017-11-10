@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Google Map V3</title>
+    <script type="text/javascript" src="js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery/resize.js"></script>
+    <!--<link href="https://developers.google.com/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css"/>-->
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+        #mapContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #mapContainer .labels {
+            font-family: '微软雅黑', '宋体';
+            max-width: 148px;
+            position: absolute;
+            font-size: 12px;
+            color: #FEFEFE;
+            background: #0E75DB;
+            padding: 0 5px;
+            text-align: center;
+            border: 1px solid #0D5194;
+            box-shadow: 2px 2px 2px rgba(35, 35, 35, 0.5);
+            border-radius: 2px;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+    <!-- add google map api -->
+    <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
+    <!--<script async defer-->
+            <!--src="https://maps.googleapis.com/maps/api/js?key=abcdefghijk&callback=initialize">-->
+    <!--</script>-->
+    <!--<script type="text/javascript" src="./js/mapTools/MapTools.js"></script>-->
+    <script type="text/javascript" src="./js/mapTools/gmapv3/mapapi.js"></script>
+    <script type="text/javascript" src="./js/mapTools/GMapUtil.js"></script>
+</head>
+<body>
+<div id="mapContainer"></div>
+</body>
+</html>
+<script type="text/javascript">
+    (function () {
+        var cluster;
+        var markers = [];
+        var defaultPoint = {name: '', lng: 104.06559, lat: 30.657406};
+
+        var map = MapUtil.Config("mapContainer", $.extend(MapUtil.OptionTemplates.default, {
+            theme: 'normal',
+            skin: 'plants',
+            center: [defaultPoint.lng, defaultPoint.lat],
+            zoomLevel: 4,
+            mapType: 0
+        })).Instance().option.map;
+
+        var size = 500;
+        while(size-- > 0) {
+            var p = MapUtil.createPoint(
+                    defaultPoint.lng + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1)),
+                    defaultPoint.lat + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1))
+            );
+            var marker = MapUtil.createMarker(p, {
+                width: 25,
+                height: 38,
+                icon: MapUtil.createIcon('./images/mapPoint/mid/map_point_1X0.png', {
+                    width: 25,
+                    height: 38,
+                    offset: [12.5, 35]
+                }),
+                title: '电站' + size,
+                label: '电站' + size,
+                cursor: 'pointer',
+                events: {
+                    click: function (e) {
+                        alert('marker clicked!!!');
+                        console.log(e);
+                    }
+                }
+            });
+//            MapUtil.addOverlay(map, marker);
+            markers.push(marker);
+        }
+        cluster = MapUtil.addCluster(map, cluster, markers);
+//        MapUtil.clearMap(map);
+
+    })();
+</script>

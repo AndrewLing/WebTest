@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Number Roll Test</title>
+    <script type="text/javascript" src="./js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="./language/zh.js"></script>
+    <script type="text/javascript" src="./js/numberRoll/numberRoll.js"></script>
+
+    <script type="text/javascript">
+        var number = 0;
+        $(function () {
+            $('#container').numberRoll();
+            setInterval(function () {
+                $('#container').numberRollRefresh({
+                    value: number || Math.floor(Math.random() * 10000000)
+                });
+            }, 3000);
+        });
+    </script>
+</head>
+<body>
+<div id="container"></div>
+
+<style>
+    .finish-count-num {
+        position: relative;
+    }
+    .line {
+        display: block;
+    }
+    .count-num-item,
+    .count-num-comma {
+        display: inline-block;
+        float: left;
+        width: 30px;
+        height: 28px;
+        border: 1px solid #666;
+        background: grey;
+        overflow: hidden;
+        font-size: 20pt;
+        line-height: 1;
+        font-family: cursive;
+    }
+    .count-num-comma {
+        width: 15px;
+        text-align: left;
+        line-height: 0.5;
+    }
+    .num-item-scroll {
+        position: relative;
+        display: block;
+        height: 25px;
+        color: #000;
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        setInterval(function () {
+            var n = Math.round(Math.random() * 10);
+            $('#b_container .count-num-item').animate({
+                scrollTop: 25 * n
+            }, 2000);
+            console.log(n);
+        }, 3000);
+    });
+</script>
+<div id="b_container">
+    <div class="finish-count-num line">
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-comma">
+            ,</div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-comma">
+            ,</div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+        <div class="count-num-item">
+            <span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span><span class="num-item-scroll">0</span><span class="num-item-scroll">1</span><span class="num-item-scroll">2</span><span class="num-item-scroll">3</span><span class="num-item-scroll">4</span><span class="num-item-scroll">5</span><span class="num-item-scroll">6</span><span class="num-item-scroll">7</span><span class="num-item-scroll">8</span><span class="num-item-scroll">9</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

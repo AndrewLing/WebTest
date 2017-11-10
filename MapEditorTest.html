@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>可编辑地图</title>
+    <script src="./js/jquery/jquery.js"></script>
+    <!--引入高德地图 API-->
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=77c9006122a14e0948e43e1a7a5441d7&plugin=AMap.PolyEditor,AMap.CircleEditor"></script>
+    <script type="text/javascript" src="./js/mapTools/AMapUtil.js"></script>
+    <style>
+        #amap {
+            width: 100%;
+            height: 800px;
+            border: 1px solid #cccccc;
+        }
+
+        .cluster_circle {
+            font-size: 1rem;
+            color: #ffffff;
+            background: rgba(189, 153, 14, 0.8);
+            box-shadow: 0 0 10px rgba(189, 153, 14, 0.8);
+            text-shadow: 0 2px 5px #fff;
+            border-radius: 50%;
+            text-align: center;
+            white-space: nowrap;
+            display: block;
+            cursor: pointer;
+        }
+        .cluster_circle:before {
+            content: ' ';
+            background: #bd990e;
+            -webkit-animation: p1act7 1.5s ease-out infinite both;
+            animation: p1act7 1s ease-out infinite both;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            border-radius: 50%;
+        }
+
+        @keyframes p1act7 {
+            0% {
+                width: 30px;
+                height: 30px;
+                opacity: 1;
+                margin-left: -15px;
+                margin-bottom: -15px;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+                margin-left: -75px;
+                margin-bottom: -75px;
+            }
+        }
+
+        @-webkit-keyframes p1act7 {
+            0% {
+                width: 30px;
+                height: 30px;
+                opacity: 1;
+                margin-left: -15px;
+                margin-bottom: -15px;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+                margin-left: -75px;
+                margin-bottom: -75px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="amap"></div>
+<div>
+    <label>
+        lng:
+        <input id="lng" onchange="changeLng()"/>
+    </label>
+    <label>
+        lat:
+        <input id="lat" onchange="changeLat()"/>
+    </label>
+    <label>
+        radius:
+        <input id="radius" onchange="changeRadius()"/>
+    </label>
+</div>
+
+<script>
+    $(function () {
+        var t = MapUtil.Config('amap', {
+            theme: 'refresh',
+            center: [104.065745, 30.657457],
+            zoomLevel: 13,
+            mapType: 0
+        }).Instance();
+        var map = t.option.map;
+
+        var _circle = MapUtil.circle(map, [104.065745, 30.657457], 1000);
+        $('#lng').val(104.065745);
+        $('#lat').val(30.657457);
+        $('#radius').val(1000);
+
+        /**
+         * move	 {type, target, lnglat}	拖拽圆心调整圆形位置时触发此事件
+                 type: 事件类型
+                 target: 发生事件的目标对象
+                 lnglat: 调整后圆的圆心坐标
+         * adjust	{type, target, radius}	鼠标调整圆形半径时，触发此事件
+                 type: 事件类型
+                 target: 发生事件的目标对象
+                 radius: 调整后圆的半径，单位：米
+         * end	{type,target}	在调用close方法时，触发该事件，target即为编辑后的圆对象
+         */
+
+        var _circke_editor = new AMap.CircleEditor(map, _circle);
+        _circke_editor.open();
+
+        AMap.event.addListener(_circke_editor, "move", function(data) {
+            console.log(data);
+            $('#lng').val(data.lnglat.lng);
+            $('#lat').val(data.lnglat.lat);
+        });
+        AMap.event.addListener(_circke_editor, "adjust", function(data) {
+            console.log(data);
+            $('#radius').val(data.radius);
+        });
+//
+//        var provinces, redPoint, bluePoint, canvas, colorFlag = 0, started;
+//        map.plugin(['AMap.CustomLayer', 'AMap.DistrictSearch'], function() {
+//            var search = new AMap.DistrictSearch();
+//            search.search('中国', function(status, data) {
+//                if (status === 'complete') {
+//                    provinces = data['districtList'][0]['districtList'];
+//                    for (var i = 0; i < provinces.length; i += 1) {
+//                        provinces[i].radious = Math.max(2, Math.floor(Math.random() * 30));
+//                    }
+//                    bluePoint = buildPoint('#00ff00');
+//                    canvas = document.createElement('canvas');
+//                    canvas.width = map.getSize().width;
+//                    canvas.height = map.getSize().height;
+//                    var cus = new AMap.CustomLayer(canvas, {
+//                        zooms: [3, 18],
+//                        zIndex: 12
+//                    });
+//                    cus.render = onRender;
+//                    cus.setMap(map);
+//                }
+//            });
+//        });
+//
+//        function buildPoint(color) {
+//            var c = document.createElement("canvas");
+//            c.width = c.height = 40;
+//            var ctx = c.getContext("2d");
+//            var grd = ctx.createRadialGradient(20, 20, 0, 20, 20, 20);
+//            grd.addColorStop(0, color);
+//            grd.addColorStop(1, "white");
+//            ctx.fillStyle = grd;
+//            ctx.beginPath();
+//            ctx.arc(20, 20, 20, 0, 2 * Math.PI);
+//            ctx.fill();
+//            return c;
+//        }
+//        function onRender() {
+//            for (var i = 0; i < provinces.length; i += 1) {
+//                provinces[i].containerPos = map.lngLatToContainer(provinces[i].center);
+//            }
+//            draw();
+//            if(!started){
+//                autoSize();
+//                started = true;
+//            }
+//        }
+//        function autoSize () {
+//            draw();
+//            setTimeout(autoSize, 250);
+//        }
+//        function draw() {
+//            var point = bluePoint;
+//            var context = canvas.getContext('2d');
+//            context.clearRect(0, 0, canvas.width, canvas.height);
+//            for (var i = 0; i < provinces.length; i += 1) {
+//                var province = provinces[i];
+//                var radious = province.radious;
+//                context.drawImage(point,
+//                        province.containerPos.x - radious,
+//                        province.containerPos.y - radious,
+//                        radious * 2,
+//                        radious * 2
+//                );
+//                context.drawImage(point,
+//                        province.containerPos.x - radious,
+//                        province.containerPos.y - radious,
+//                        radious * 2,
+//                        radious * 2
+//                );
+//                province.radious = (radious + 20) % 30;
+//            }
+//            colorFlag = (colorFlag + 1) % 2;
+//        }
+
+
+        var data = {success: true, data: [
+            {id: '0001', name: '区adfasdfasdf域1', lng: 102.298342, lat: 36.231459, radius: 10000, installCapacity: 1300, type: '0'},
+            {id: '0006', name: '区adfasdfasdf域1', lng: 102.298342, lat: 28.231459, radius: 10000, installCapacity: 300, type: '0'},
+            {id: '0008', name: '区adfasdfasdf域1', lng: 102.298342, lat: 20.231459, radius: 10000, installCapacity: 1000, type: '0'},
+            {id: '0002', name: '区asdfasdfasdf域2', lng: 112.298342, lat: 23.231459, radius: 10000, installCapacity: 100, type: '0'},
+            {id: 'S0001', name: '电asdfasdfasdfadsfasdf站1', lng: 120.298342, lat: 30.231459, radius: null, installCapacity: 10, type: '1'}
+        ]};
+
+        function addMarker (data) {
+            var maxInstallCapacity = 0;
+            $.each(data, function (i, p) {
+                maxInstallCapacity = Math.max(p.installCapacity, maxInstallCapacity);
+            });
+            $.each(data, function (i, p) {
+                if (p.type && p.type == '1') {
+                    var point = MapUtil.createPoint(p.lng, p.lat);
+                    var icon = MapUtil.createIcon('./images/mapPoint/map_point2X0-min.png', {  width: 32, height: 32, offset: [-10, -28] });
+                    var marker = MapUtil.createMarker(point, {
+                        icon: icon,
+                        label: p.name,
+                        title: p.name,
+                        events: {
+                            'click': function(e) {
+                                console.info(e);
+                                return false;
+                            }
+                        }
+                    });
+                    MapUtil.addOverlay(map, marker);
+                } else {
+                    var radius = 100 * p.installCapacity / maxInstallCapacity;
+                    if (radius < 50) radius = 50;
+                    var content = $('<div class="cluster_circle">' + p.name + '</div>').css({
+                        width: radius,
+                        height: radius,
+                        'line-height': radius + 'px',
+                        fontSize: radius / 80 + 'rem'
+                    });
+                    var marker = MapUtil.createMarker(MapUtil.createPoint(p.lng, p.lat), {
+                        offset: new AMap.Pixel(-1 * radius / 2, -1 * radius / 2),
+                        content: content.get(0),
+                        title: 'Label',
+                        events: {
+                            'click': function (e) {
+                                console.info(e);
+                                return false;
+                            }
+                        }
+                    });
+                    MapUtil.addOverlay(map, marker);
+                }
+            });
+            MapUtil.fitView(map);
+        }
+
+        addMarker(data.data);
+
+    });
+</script>
+</body>
+</html>

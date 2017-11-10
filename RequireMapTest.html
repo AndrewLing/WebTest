@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>Map Tools</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #map_container {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+    <script type="text/javascript" src="./js/require.js" data-main="./lib/main" defer async="true"></script>
+</head>
+<body>
+<!--<div id="map_container"></div>-->
+<select id="lang_sel">
+    <option value="zh">中文</option>
+    <option value="en">English</option>
+</select>
+
+<div id="title" style="font-size: 18pt;">
+    <span class="i18n" data-i18n-type="text title placeholder" data-i18n-message="title"></span>
+</div>
+<!--<label>-->
+    <!--<input type="checkbox" name="name" value=""/>-->
+    <!--<span class="v"></span>-->
+<!--</label>-->
+</body>
+</html>

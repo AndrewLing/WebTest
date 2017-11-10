@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JTopo demo</title>
+</head>
+<body>
+<div id="container" style="height: 800px; background-color: #FFF; border: 1px solid #444;"></div>
+<div style="height: 132px; padding: 5px; border: 1px solid #444; box-sizing: border-box;">
+    <textarea id="resultJson" style="width: 100%; height: 100%; display: block; box-sizing: border-box;"></textarea>
+    <button id="getResultJsonBtn" style="position: absolute;top: 15px;display: inline-block;">获取结果</button>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<!--<script type="text/javascript" src="js/lib/jtopo-0.4.8-dev.js"></script>-->
+<script type="text/javascript" src="js/lib/jtopo-0.4.8.js"></script>
+<!--<script type="text/javascript" src="js/lib/editor.js"></script>-->
+<script type="text/javascript" src="js/lib/Topology.js"></script>
+<!--<script type="text/javascript" src="js/demo_1.js"></script>-->
+
+<script>
+    $(function () {
+//        $('#container').Topology({
+//            width: 1480,
+//            height: 800,
+//            data: [
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECA1", type: "Node", icon: "zc", size: [47, 40], name: "组串1", location: [20, 351.34]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECA2", type: "Node", icon: "zc", size: [47, 40], name: "组串2", location: [20, 551.34]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECCA", type: "Node", icon: "db", size: [80, 80], name: "电表", location: [380, 480.34]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECC1", type: "Node", icon: "dydw", size: [84, 80], name: "电网", location: [620, 480.34]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECCB", type: "Node", icon: "aqgdh", size: [65, 60], name: "安全关断盒", location: [220, 480.34]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECCC", type: "StraightLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECCB", toNode: "7D65A5DC5B82422898DA6FE3D370ECCA", label: "label1"},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECC3", type: "StraightLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECCA", toNode: "7D65A5DC5B82422898DA6FE3D370ECC1", label: "label2"},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECCD", type: "Node", icon: "yhq", size: [80, 80], name: "01S01", location: [280, 20]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECCE", type: "Node", icon: "yhq", size: [80, 80], name: "01S02", location: [340, 20]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECCF", type: "Node", icon: "yhq", size: [80, 80], name: "01S03", location: [400, 20]},
+////                {id: "7D65A5DC5B82422898DA6FE3D370ECD1", type: "FoldLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECCD", toNode: "7D65A5DC5B82422898DA6FE3D370ECCB", label: "label3"},
+////                {id: "7D65A5DC5B82422898DA6FE3D370ECD2", type: "FoldLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECCE", toNode: "7D65A5DC5B82422898DA6FE3D370ECCB", label: "label3"},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECD3", type: "FoldLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECCF", toNode: "7D65A5DC5B82422898DA6FE3D370ECCB", label: "label3"},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECDA", type: "Node", icon: "yhq", size: [80, 80], name: "01S04", location: [280, 120]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECDB", type: "Node", icon: "yhq", size: [80, 80], name: "01S05", location: [340, 120]},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECDC", type: "Node", icon: "yhq", size: [80, 80], name: "01S06", location: [400, 120]},
+////                {id: "7D65A5DC5B82422898DA6FE3D370ECD4", type: "FoldLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECDA", toNode: "7D65A5DC5B82422898DA6FE3D370ECCB", label: "label4"},
+////                {id: "7D65A5DC5B82422898DA6FE3D370ECD5", type: "FoldLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECDB", toNode: "7D65A5DC5B82422898DA6FE3D370ECCB", label: "label4"},
+//                {id: "7D65A5DC5B82422898DA6FE3D370ECD6", type: "FoldLink", formNode: "7D65A5DC5B82422898DA6FE3D370ECDC", toNode: "7D65A5DC5B82422898DA6FE3D370ECCB", label: "label4"},
+//            ],
+//            events: {
+//                "7D65A5DC5B82422898DA6FE3D370ECA1": {
+//                    "click": function (e) {
+//                        console.log(e, this);
+//                        alert('click(' + "7D65A5DC5B82422898DA6FE3D370ECA1" + ')');
+//                    }
+//                }
+//            },
+//            opacity: 0.8
+//        });
+        var elements = [
+            {
+                "id": "N172.19.105.52015100911045400010",
+                "elementType": "node",
+                "x": "100",
+                "y": "420",
+                "text": "安全关断盒",
+                "dataType": "cutOffBox"
+            },
+            {
+                "id": "N172.19.105.52015100911045400011",
+                "elementType": "node",
+                "x": "400",
+                "y": "600",
+                "text": "储能充电",
+                "dataType": "energyStore"
+            },
+            {
+                "id": "N172.19.105.52015100911045400012",
+                "elementType": "node",
+                "x": "800",
+                "y": "400",
+                "text": "01N01逆变器",
+                "dataType": "inverter"
+            },
+            {
+                "id": "N172.19.105.52015100911045400013",
+                "elementType": "node",
+                "x": "1200",
+                "y": "402.5",
+                "text": "电表",
+                "dataType": "meter"
+            },
+            {
+                "id": "N172.19.105.52015100911045400014",
+                "elementType": "node",
+                "x": "1600",
+                "y": "390",
+                "text": "电网",
+                "dataType": "grid-low"
+            },
+            {
+                "id": "L172.19.105.52015100811153300004",
+                "elementType": "link",
+                "fromNode": "N172.19.105.52015100911045400010",
+                "toNode": "N172.19.105.52015100911045400012",
+                "lineType": "line"
+            },
+            {
+                "id": "L172.19.105.52015100811153300005",
+                "elementType": "link",
+                "fromNode": "N172.19.105.52015100911045400012",
+                "toNode": "N172.19.105.52015100911045400013",
+                "lineType": "line"
+            },
+            {
+                "id": "L172.19.105.52015100811153300006",
+                "elementType": "link",
+                "fromNode": "N172.19.105.52015100911045400013",
+                "toNode": "N172.19.105.52015100911045400014",
+                "lineType": "line"
+            }
+        ];
+        for (var i = 0; i < 4; i++) {
+            var j = 0;
+            for (; j < 20; j++) {
+                elements.push({
+                    "id": "N172.19.105.520151009110454001" + (i * 20 + j),
+                    "elementType": "node",
+                    "x": j * 90,
+                    "y": i * 100,
+                    "text": (i + 1) + "N" + (j + 1),
+                    "deviceId": "564241624829" + (i * 20 + j),
+                    "dataType": "optimizer"
+                });
+            }
+            var lastN = i * 20 + (j - 1);
+            console.log(lastN);
+            elements.push({
+                "id": "N172.19.105.520151009110454002" + i,
+                "elementType": "link",
+                "fromNode": "N172.19.105.520151009110454001" + lastN,
+                "toNode": "N172.19.105.52015100911045400010",
+                "lineType": "flexLine"
+            });
+        }
+        var data = {
+            "version": "0.4.8",
+            "wheelZoom": "0.95",
+            "deviceNum": "18",
+            "width": "1900",
+            "height": "800",
+            "childs": [
+                {
+                    "elementType": "scene",
+                    "childs": elements
+                }
+            ]
+        };
+        var topology = $('#container').Topology({
+//            width: 1480,
+//            height: 800,
+            data: data,
+            events: {
+                "click": function (e) {
+                    console.log(e, e.target, this);
+                    alert('click(' + "7D65A5DC5B82422898DA6FE3D370ECA1" + ')');
+                }
+            },
+            opacity: 0.8
+        });
+
+        $('#getResultJsonBtn').click(function () {
+           $('#resultJson').val(topology.toJson());
+        });
+    });
+</script>
+</body>
+</html>

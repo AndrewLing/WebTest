@@ -1,0 +1,91 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0031)http://171.7.21.121/MyHtml.html -->
+<HTML>
+	<HEAD>
+		<TITLE>回放Demo</TITLE>
+		<META http-equiv=keywords content=keyword1,keyword2,keyword3>
+		<META http-equiv=description content="this is my page">
+		<META http-equiv=content-type content="text/html; charset=UTF-8">
+		<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+		<META content="MSHTML 6.00.2900.6058" name=GENERATOR>
+		<style type="text/css">
+        td {
+        	border:1px solid blue;
+        }
+       
+        </style>
+		<script> 
+		function init(){
+			document.getElementById('xml').value=''; 
+                        var PlayBackOCX=document.getElementById("PlayBackOCX"); 
+                        PlayBackOCX.SetWndNum(16);
+		}
+		function applyXML(){
+			var PlayBackOCX=document.getElementById("PlayBackOCX");
+			var xml=document.getElementById('xml').value;
+			var result = document.getElementById("PlayBackOCX").SetPlayBackParam(xml);
+			document.getElementById("PlayBackOCX").StartQueryRecord(xml);
+		}
+		
+		function print(msg){
+			var console=document.getElementById('console');
+			var oldMsg=console.value;
+			console.value=oldMsg+'\n'+msg;
+		}
+		</script>
+		<script language="javascript" for="PlayBackOCX" event="FireStartPlayBack(lWindowID)">  
+			print('FireStartPlayBack('+lWindowID+')');
+        </script>
+        <script language="javascript" for="PlayBackOCX" event="FireStopPlayBack(lWindowID)">  
+        	print('FireStopPlayBack('+lWindowID+')');
+        </script>
+
+        <script language="javascript" for="PlayBackOCX" event="FireEvtStartPlayBack(lCameraID,strAlarmEvent)">
+        	print('FireEvtStartPlayBack('+lCameraID+','+strAlarmEvent+')');
+        </script>
+        <script language="javascript" for="PlayBackOCX" event="FireEvtStopPlayBack(lCameraID,strAlarmEvent)">
+        	print('FireEvtStopPlayBack('+lCameraID+','+strAlarmEvent+')');
+        </script>
+        <script language="javascript" for="PlayBackOCX" event="FireFinishQuery()">
+        	print('FireFinishQuery()');
+        </script>
+        <script language="javascript" for="PlayBackOCX" event="FireStartDown()">
+        	print('FireStartDown()');
+        </script>
+        <script language="javascript" for="PlayBackOCX" event="FireFinishDown()">
+        	print('FireFinishDown()');
+        </script>
+
+	</HEAD>
+	<BODY onload="init()">
+		<TABLE style="width: 100%; height: 100%">
+			<TBODY>
+				<TR>
+					<TD style="width: 40%; height: 80%">
+						回放XML：
+						<br>
+						<textarea style="width: 100%; height: 90%" name="xml" id="xml"></textarea>
+						<br>
+						<INPUT type="button" value="设置XML" onclick="applyXML()">
+					</TD>
+					<TD style="width: 60%; height: 80%">
+						<object classid="clsid:61978326-6772-4595-9EC3-D23C5CD5E61F"
+							width="100%" height="100%" id="PlayBackOCX" name="PlayBackOCX">
+							<param name="theme" value="blue">
+						</object>
+					</TD>
+				</TR>
+				<TR>
+					<TD colspan="2" style="width: 100%; height: 20%">
+						控制台：
+						<br>
+						<textarea style="width: 100%; height: 90%" name="console"
+							id="console"></textarea>
+					</TD>
+				</TR>
+			</TBODY>
+		</TABLE>
+
+	</BODY>
+</HTML>
+

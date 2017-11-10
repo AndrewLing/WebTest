@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="./js/jquery/jquery.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            width: 98%;
+            height: 500px;
+            margin: 0 auto;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border: 1px solid #c6c6c6;
+        }
+
+        #drag_bar {
+            width: 100%;
+            height: 10px;
+            text-align: center;
+            line-height: 0.5;
+            background: #0099FF;
+            cursor: n-resize;
+        }
+
+        #settings-box li {
+            float: left;
+            width: 300px;
+            height: 50px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            list-style: none;
+        }
+    </style>
+    <style>
+        input:required {
+            border: 1px solid #c6c6c6;
+        }
+
+        input:valid {
+            background-color: #adff2f;
+        }
+
+        input:invalid {
+            background-color: #f08080;
+        }
+    </style>
+    <script>
+        $(function () {
+            var bh = 0;
+            var box = document.getElementById('box');
+            var dragBar = document.getElementById('drag_bar');
+            dragBar.addEventListener('dragstart', function (e) {
+                console.log('拖动开始！');
+                bh = e.y;
+            });
+            dragBar.addEventListener('drag', function (e) {
+                console.log('拖动中……', $(box).height());
+                console.log(bh, e.y);
+                $(box).height($(box).height() + (bh - e.y));
+                bh = e.y;
+
+            });
+            dragBar.addEventListener('dragend', function (e) {
+                debugger
+                console.log('拖动结束！', e.y);
+                $(box).height(window.innerHeight - e.y);
+            });
+
+            $('#button').click(function () {
+                window.open('./about.html');
+            });
+
+            $('#settings-box').hover(function () {
+                $('ul', this).show();
+            }, function () {
+                $('ul', this).hide();
+            });
+
+
+            function passwordCheck(value) {//用户密码校验
+                var result = /^([a-z]+[A-Z]+\d+([-`=\\\[\];',.\/~!@#$%^&*()_+|{}:"<>?])+]){6,}$/.test(value);
+                console.log(result);
+            }
+
+            passwordCheck("Aa!123456");
+        });
+    </script>
+</head>
+<body>
+<div id="box" style="height: 800px;">
+    <div id="drag_bar" draggable="true">=</div>
+    <form action="#" onsubmit="alert(1)" onreset="alert(2)">
+        <table>
+            <tr>
+                <td>
+                    <select class="select">
+                        <option>1</option>
+                        <option>1</option>
+                        <option>1</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="n1">DD</label></td>
+                <td><input type="number" id="n1" name="n1" required="true"/></td>
+                <td><label for="n2">MM</label></td>
+                <td><input type="number" id="n2" name="n2" required="true"/></td>
+            </tr>
+        </table>
+        <ul>
+            <li>
+                <span>1</span>
+                <span>2</span>
+            </li>
+        </ul>
+        <button type="submit">Submit</button>
+        <button id="button" type="button">Button</button>
+        <button type="reset">Reset</button>
+    </form>
+    <div id="settings-box" style="display: inline-block;">
+        <div id="settings-btn" style="width: 50px; height: 50px;border:1px solid #999"></div>
+        <ul style="display: none;">
+            <li><label><input type="checkbox" name="c">2</label></li>
+            <li><label><input type="checkbox" name="c">1</label></li>
+            <li><label><input type="checkbox" name="c">3</label></li>
+        </ul>
+        <div style="clear: both; width: 100%; height: 50px; border: 1px solid #ccc"></div>
+    </div>
+
+    <h2>Login</h2>
+
+    <form action="" autocomplete="off">
+        <label for="username">Username</label>
+        <input id="username" name="username" pattern="[a-zA-Z0-9]{5,}" title="Minimum 5 letters or numbers." required>
+        <!-- Credit: http://stackoverflow.com/questions/5458076/regex-in-new-pattern-attr-for-html5-forms -->
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" pattern=".{5,}" title="Minmimum 5 letters or numbers."
+               required>
+
+        <input name="text1" required="true" type="text" style="display: none;"/>
+        <p/>
+        <input type="submit" class="btn" value="Login">
+
+    </form>
+
+    <h2>Register</h2>
+
+    <form action="" autocomplete="off">
+        <label for="pic">Picture</label>
+        <input id="pic" name="pic" type="file" title="Required" required onchange="alert(this.value)">
+
+        <label for="username2">Username</label>
+        <input id="username2" name="username" pattern="[a-zA-Z0-9]{5,}" title="Minmimum 5 letters or numbers." required>
+
+        <label for="password2">Password</label>
+        <input id="password2" name="password" type="password" pattern=".{5,}" title="Minmimum 5 letters or numbers."
+               required>
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+
+        <label for="url">Homepage</label>
+        <input id="url" name="url" type="url">
+
+        <p/>
+        <input type="submit" class="btn" value="Register">
+
+    </form>
+
+
+    <a href="about.html" target="_self">about</a>
+</div>
+</body>
+</html>

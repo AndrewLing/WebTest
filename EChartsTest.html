@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>ECharts Test</title>
+    <script type="text/javascript" src="./js/jquery/jquery.js"></script>
+
+    <script type="text/javascript" src="./js/jquery/plugins/echarts/echarts-all.js"></script>
+    <script type="text/javascript" src="./js/jquery/plugins/mac/ECharts.js"></script>
+</head>
+<body>
+<!--<div id="echarts_container" style="width: 1200px; height: 500px; border: 1px solid #ccc;"></div>-->
+
+<script type="text/javascript">
+    $(function () {
+        var ec_con = $('<div id="echarts_container" style="width: 1200px; height: 500px; border: 1px solid #ccc;"></div>');
+        $('body').append(ec_con);
+
+        var option = {
+            grid: {
+                x: 60,
+                y: 60,
+                x2: 60,
+                y2: 60
+            },
+            title: {
+                text: '某地区蒸发量和降水量',
+                subtext: '纯属虚构'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['蒸发量', '降水量']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '蒸发量',
+                    type: 'bar',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name: '降水量',
+                    type: 'bar',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    markPoint: {
+                        data: [
+                            {name: '年最高', value: 182.2, xAxis: 7, yAxis: 183, symbolSize: 18},
+                            {name: '年最低', value: 2.3, xAxis: 11, yAxis: 3}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+
+//        var ec = ECharts.Render('echarts_container', option, true);
+        var ec = ECharts.Render(ec_con.get(0), option, true);
+
+        var lastData = 11;
+        var axisData;
+        clearInterval(window.timeTicket);
+        window.timeTicket = setInterval(function (){
+            lastData += Math.random() * ((Math.round(Math.random() * 10) % 2) == 0 ? 1 : -1);
+            lastData = lastData.toFixed(1) - 0;
+            axisData = (new Date()).toLocaleTimeString().replace(/\D*/, '');
+
+            var data = [
+                [ 0, Math.round(Math.random() * 10), false, false ],
+                [ 1, lastData, false, false, axisData ]
+            ];
+            var datas = [Math.round(Math.random() * 10), lastData];
+            var data0 = datas[0];
+            var data1 = datas[1];
+            console.log('refresh data', ec, data0, data1);
+
+            // 动态数据接口 addData
+//            ECharts.AddData(ec, data0, 0, false, false);
+//            ECharts.AddData(ec, data1, 1, false, true, axisData);
+//            ECharts.AddDatas(ec, datas, false, false, axisData);
+            ECharts.AddDatas(ec, datas);
+        }, 2100);
+    });
+</script>
+</body>
+</html>

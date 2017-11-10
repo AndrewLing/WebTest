@@ -1,0 +1,21 @@
+var Lan = {
+    zh: "中文",
+    en: "English",
+    ja: "にんほんご",
+    groupName: "FusionSolar",
+    groupSubName: "营维分析系统",
+    inputUsername: "输入用户名",
+    inputPassword: "输入密码",
+    login: "登录",
+    FusionSolar: "FusionSolar 营维分析系统",
+    loginError: "登录异常，请刷新页面后重试！",
+    sure: "确定",
+    cancel: "取消",
+    browserInfluence: "使用非谷歌浏览器可能会影响界面的效果哦!",
+    notChrome: "非谷歌浏览器,是否下载指定版本谷歌浏览器?",
+    browserTip_one: "1.谷歌离线安装包为静默安装,无安装提示。",
+    browserTip_two: "2.运行安装片刻后,桌面出现谷歌浏览器图标说明安装成功。",
+    browserTip_three: "3.若使用的是非指定版本的谷歌浏览器,请先卸载再进行安装。",
+    browserTip_four: "4.若本地未安装谷歌浏览器,则可直接安装。",
+    declareMessage: "声明:"
+};

@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.DynamicGrid {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    /*border: 1px solid #cccccc;*/
+}
+
+.DynamicGrid > li {
+    line-height: 0;
+    list-style: none;
+}
+
+.DynamicGrid .DynamicGrid-head {
+    line-height: 0;
+    list-style: none;
+    overflow: hidden;
+    margin-right: 50px;
+    padding: 4px 0;
+    border: 1px solid #ccc;
+    vertical-align: bottom;
+}
+
+.DynamicGrid .DynamicGrid-head p {
+    text-align: center;
+    display: inline-table;
+    border-left: 1px solid #ccc;
+    vertical-align: middle;
+    line-height: 18px;
+    min-width: 32px;
+}
+
+.DynamicGrid .DynamicGrid-head p:first-child {
+    border-left: none;
+}
+
+.DynamicGrid .DynamicGrid-body {
+    overflow: hidden;
+}
+
+.DynamicGrid .DynamicGrid-body ul {
+    margin-right: 50px;
+}
+
+.DynamicGrid .DynamicGrid-body li {
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+
+.DynamicGrid .DynamicGrid-body .body-line {
+    text-align: center;
+    display: inline-table;
+    vertical-align: middle;
+}
+
+.DynamicGrid .data-index-box {
+    text-align: center;
+}
+
+.DynamicGrid .operator-btn-container {
+    text-align: left !important;
+    border-right: none !important;
+    min-width: 45px;
+    min-height: 18px;
+    position: absolute;
+    top: 0;
+    right: 0px;
+}
+
+.DynamicGrid .DynamicGrid-body .operator-btn-container {
+    top: 0;
+    right: -50px;
+}
+
+.DynamicGrid .operator-btn {
+    border: 1px solid transparent;
+    background: transparent center no-repeat;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.DynamicGrid .operator-btn:hover {
+    background-color: #EAEAEA;
+    border: 1px solid #FFFFFF;
+}
+
+.DynamicGrid .operator-btn.add {
+    color: #00AA00;
+    background-image: url(../skin/add.png);
+}
+
+.DynamicGrid .operator-btn.delete {
+    color: #AA0000;
+    background-image: url(../skin/delete.png);
+}

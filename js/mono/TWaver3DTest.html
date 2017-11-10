@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TWaver 3D 效果测试</title>
+    <link href="js/mono/css/mono.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='init()'>
+    <div id="monoCanvas"></div><script type="text/javascript" src="js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/mono/js/mono.js"></script>
+    <script type="text/javascript" src="js/mono/js/topo3DUtil.js"></script>
+    <script type="text/javascript" src="js/mono/js/topo3DRegister.js"></script>
+    <!--<script type="text/javascript" src="js/mono/js/demo.js"></script>-->
+    <!--<script type="text/javascript" src="js/mono/js/monoDataInfos.js"></script>-->
+    <!--<script type="text/javascript" src="js/mono/js/TWaver3DUtil.js"></script>-->
+    <script type="text/javascript">
+        var dataJson = {
+            objects: [
+                {
+                    type: "floor", width: 2400, depth: 1200
+                },
+                {
+                    type: "terrain", width: 1200, height: 10, depth: 1,
+                    translate: [-1200, -100, 600]
+                },
+                {
+                    type: "sun", radius: 100,
+                    translate: [0, 1e3, 0]
+                },
+                {
+                    type: "erection1", height: 100, radiusTop: 10, radiusBottom: 10,
+                    translate: [0, 0, 0]
+                },
+                {
+                    type: "erection2", height: 100, width: 100, depth: 100,
+                    translate: [200, 0, 200]
+                },
+                {
+                    type: "massif", height: 300, radiusTop: 100, radiusBottom: 300,
+                    translate: [-1000, 100, 20]
+                }
+            ]
+        };
+
+        function init() {
+            topo3D.init('monoCanvas');
+        }
+
+    </script>
+</body>
+</html>

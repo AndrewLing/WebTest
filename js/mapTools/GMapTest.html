@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>点聚合显示</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+        #mapContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #tip {
+            height: 45px;
+            background-color: #fff;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: 1px solid #969696;
+            position: absolute;
+            font-size: 12px;
+            right: 10px;
+            bottom: 30px;
+            border-radius: 3px;
+            line-height: 45px;
+        }
+
+        #tip input[type='button'] {
+            height: 28px;
+            line-height: 28px;
+            outline: none;
+            text-align: center;
+            padding-left: 5px;
+            padding-right: 5px;
+            color: #FFF;
+            background-color: #0D9BF2;
+            border: 0;
+            border-radius: 3px;
+            margin-top: 8px;
+            margin-left: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        /*.gmap-marker-labels {*/
+        /*font-family: '微软雅黑', '宋体';*/
+        /*max-width: 148px;*/
+        /*position: absolute;*/
+        /*font-size: 12px;*/
+        /*color: #FEFEFE;*/
+        /*background: #0E75DB;*/
+        /*padding: 0 5px;*/
+        /*text-align: center;*/
+        /*border: 1px solid #0D5194;*/
+        /*box-shadow: 2px 2px 2px rgba(35, 35, 35, 0.5);*/
+        /*border-radius: 2px;*/
+        /*display: block;*/
+        /*overflow: hidden;*/
+        /*text-overflow: ellipsis;*/
+        /*white-space: nowrap;*/
+        /*}*/
+
+    </style>
+
+    <script type="text/javascript" src="../jquery/jquery.js"></script>
+</head>
+<body>
+<div id="mapContainer"></div>
+<!--<div id="tip">-->
+<!--<input type="button" value="自定义样式点聚合" onClick="javascript:addCluster(1)"/>-->
+<!--<input type="button" value="默认样式点聚合" onClick="javascript:addCluster(0)"/>-->
+<!--</div>-->
+
+<!--<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=77c9006122a14e0948e43e1a7a5441d7"></script>-->
+<script type="text/javascript" src="./MapTools.js"></script>
+<!--<script type="text/javascript" src="../mapTools/MapTools.js"></script>-->
+<!--<script type="text/javascript" src="./AMapUtil.js"></script>-->
+
+<script type="text/javascript">
+    $(function () {
+        var cluster;
+        var markers = [];
+        var defaultPoint = {name: '', lng: 104.065745, lat: 30.657452};//104.065745,30.657457
+
+        var mac = {};
+        mac.Lang = 'en';
+
+        MapTools.mapType = 'AMap';
+        MapTools.ready(function () {
+            /**
+             * 地图初始化&向地图随机加点
+             */
+            var lang = mac.Lang && mac.Lang.indexOf('zh') >= 0 ? 'zh_cn' : 'en';
+            console.log(mac.Lang, lang);
+            var map = MapUtil.Config("mapContainer", $.extend(MapUtil.OptionTemplates.plants, {
+                lang: lang,
+                center: [defaultPoint.lng, defaultPoint.lat],
+                mapType: 1
+            })).Instance().option.map;
+
+            // 随机向地图添加500个标注点
+            var size = 500;
+            while (size-- > 0) {
+                var markerPosition = MapUtil.createPoint(
+                        defaultPoint.lng + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1)),
+//                        defaultPoint.lng,
+                        defaultPoint.lat + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1))
+//                        defaultPoint.lat
+                );
+                var marker = MapUtil.createMarker(markerPosition, {
+                    width: 25,
+                    height: 38,
+                    //marker图标，直接传递地址url
+                    icon: '../../images/mapPoint/mid/map_point_1X0.png',
+                    title: 'Num ' + size,
+                    label: 'Num ' + size + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.slice(Math.abs(Math.random() * 26)),
+//                    label: 'Num ' + size,
+                    offset: {x: -12.5, y: -32},
+                    cursor: 'pointer'
+                });
+                markers.push(marker);
+            }
+
+            //添加点聚合
+            cluster = MapUtil.addCluster(map, cluster, markers);
+
+            console.log('end = ', new Date().getTime());
+        }, function () {
+            alert('error!!!');
+        });
+
+    });
+</script>
+</body>
+</html>

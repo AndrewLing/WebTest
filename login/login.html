@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>FusionSolar 营维分析系统</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache, must-revalidate" />
+<link href="../login/login.css" rel="stylesheet" type="text/css" />
+<link href="css/theme.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<script type="text/javascript" src="js/jquery/md5.js"></script>
+<script type="text/javascript" src="js/jquery/mousewheel.js"></script>
+<script type="text/javascript" src="js/jquery/Cookies.js"></script>
+<!--jquery ui component  -->
+<script src="js/jquery/ui/core.js" type=""></script>
+<script src="js/jquery/ui/widget.js" type=""></script>
+<script src="js/jquery/ui/mouse.js" type=""></script>
+<script src="js/jquery/ui/draggable.js" type=""></script>
+<script src="js/jquery/ui/position.js" type=""></script>
+<script src="js/jquery/ui/resizable.js" type=""></script>
+<script src="js/jquery/ui/button.js" type=""></script>
+<script src="js/jquery/ui/dialog.js" type=""></script>
+<!-- validate -->
+<script type="text/javascript"
+	src="../js/jquery/plugins/validate/validate.js"></script>
+<!-- globle -->
+<script type="text/javascript" src="../js/globle/globle.js"></script>
+<script type="text/javascript" src="../js/globle/menu.js"></script>
+<script type="text/javascript" src="../js/globle/core.js"></script>
+<!-- mac component  -->
+<script type="text/javascript" src="../login/banbh.js"></script>
+<script type="text/javascript" src="../login/zh.js"></script>
+<script type="text/javascript" src="../login/login.js"></script>
+</head>
+<body>
+	<!--背景图box-->
+	<div id="box-bg1">
+		<div id="box-bg2">
+			<div id="box-bg3">
+				<!--登录框-->
+				<div class="login">
+					<div class="login-box">
+						<!--logo-->
+						<div class="logo-div text" title="Lan.FusionSolar">
+							<!-- <img src="login/login-logo.png" border="0"
+								alt="FusionSolar 营维分析系统" /> -->
+							<p class="text">Lan.groupName</p>
+							<p class="text">Lan.groupSubName</p>
+						</div>
+						<!--end logo-->
+						<!--input area-->
+						<div class="input-area">
+							<div id="language">
+								<select>
+									<option class="text" value="zh">Lan.zh</option>
+									<option class="text" value="en">Lan.en</option>
+									<option class="text" value="ja">Lan.ja</option>
+								</select>
+							</div>
+							<!--   <span id="error"></span>-->
+							<!-- <form action="validLogin" method="post" id="formmd5">-->
+							<input style='display: none' type="text" id="loginTicket"
+								name="loginTicket" value="${loginTicket}" />
+							<table width="100%" align="center" cellspacing="0"
+								cellpadding="0" class="input-table">
+								<tr>
+									<!--登录提示-->
+									<td width="100%" align="center" height="40" valign="bottom"
+										id="successTd">&nbsp;&nbsp;<font
+										style="color: #0daa05; font-size: 12px;"><span
+											id="success"></span> </font>&nbsp; <font
+										style="color: #ff0000; font-size: 12px;"> <span
+											id="error"></span>
+									</font></td>
+									<!--end 登录提示-->
+								</tr>
+								<tr>
+									<td width="100%" align="center" height="60">
+										<!--用户名--> <input type="text" name="username"
+										class="input-username text" autocomplete="off" id="username"
+										value="" title="Lan.inputUsername" /> <!--end 用户名-->
+									</td>
+								</tr>
+								<tr>
+									<td width="100%" align="center" height="60"><input
+										type="hidden" id="password" name="password" autocomplete="off" />
+										<!--密码--> <input type="password" name="txt_password"
+										class="input-password text" value="" id="txt_password" title="Lan.inputPassword"
+										autocomplete="off" /> <!--end 密码--></td>
+								</tr>
+								<tr>
+									<td width="100%" align="center" height="60">
+										<div class="text" id="errorMessageId" style="color: red;"></div>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" valign="bottom" height="84">
+										<button class="input-login-button text" type="button" id="login" onclick="checkLogin()">Lan.login</button>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									</td>
+								</tr>
+							</table>
+							<!-- </form>-->
+						</div>
+						<!--end input area-->
+					</div>
+				</div>
+				<!--end 登录框-->
+			</div>
+		</div>
+	</div>
+	<!--end 背景图box-->
+</body>
+</html>

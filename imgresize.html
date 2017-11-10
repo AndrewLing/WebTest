@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>图片自适应局中-鼠标滑过图片预览效果</title>
+        <style>
+            body{background-color:#ddd;}
+            *{padding:0; margin:0; border:0;}
+            img{display:block;}
+            .pics-list {}
+            .pics-list li {
+                -moz-transition: opacity 0.2s ease-in-out 0s;
+                -webkit-transition: opacity 0.2s ease-in-out 0s;
+                -0-transition: opacity 0.2s ease-in-out 0s;
+                transition: opacity 0.2s ease-in-out 0s;
+                background-color: #EAEAEA;
+                float: left;
+                height: 90px;
+                margin: 0 1px 1px 0;
+                overflow: hidden;
+                width: 120px;
+                border:5px solid #fff;
+                opacity: 0.8;
+                font-size:0;
+            }
+            .pics-list li a{display:block; height:100%; width:100%; overflow:hidden;}
+            .pics-list li img {
+                -moz-transition: opacity 1.5s ease-in-out 0s;
+                -webkit-transition: opacity 1.5s ease-in-out 0s;
+                -o-transition: opacity 1.5s ease-in-out 0s;
+                transition: opacity 1.5s ease-in-out 0s;
+                display: block;
+            }
+            .pics-list li:hover {
+                opacity: 1;
+            }
+            div[id^=log]{position:fixed; z-index:20; right:0}
+            #log1{top:20px;}
+            #log2{top:40px;}
+			
+			#demo1{clear:both;}
+			#demo1 li{width:150px; height:200px;}
+        </style>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+            var centerPics =function(img){
+                var img = jQuery(img);
+                var objW = img.width();
+                var objH = img.height();
+                var objRatio = objW/objH;
+				var objParentW = img.parent().width();
+                var objParentH = img.parent().height();
+                var objParentRatio = objParentW/objParentH;
+				if(objW < objParentW && objH < objParentH){// 图片宽高都小于容器
+                    img.css('margin-top',(objParentH - objH)/2);
+                    img.css('margin-left',(objParentW - objW)/2);
+                }else if(objW < objParentW && objH > objParentH){ // 图片只有高大于容器
+                    img.css('margin-left',(objParentW - objW)/2)
+                    img.css('margin-top',(objParentH - objH)/2);
+                    img.attr('data-top',(objParentH - objH)/2);
+                }else if(objW > objParentW && objH < objParentH){ // 图片只有宽大于容器
+                    img.css('margin-top',(objParentH - objH)/2)
+                    img.css('margin-left',(objParentW - objW)/2);
+                    img.attr('data-left',(objParentW - objW)/2);
+                }else if(objW > objParentW && objRatio > objParentRatio){ //图片宽高比例 都大于 容器宽高比例
+                    img.height(objParentH);
+                    img.width(Math.round(objParentH*objRatio));
+                    img.css('margin-left',(objParentW-(Math.round(objParentH*objRatio)))/2);
+                    img.attr('data-left',(objParentW-(Math.round(objParentH*objRatio)))/2);
+                }else if(objW > objParentW && objRatio < objParentRatio){ // 图片宽高大于容器. 图片比例小于容器比例的
+                    img.width(objParentW);
+                    img.height(Math.round(objParentW/objRatio));
+                    img.css('margin-top',(objParentH -(Math.round(objParentW/objRatio)))/2)
+                    img.attr('data-top',(objParentH -(Math.round(objParentW/objRatio)))/2)
+                };
+                img.bind("mousemove",
+                    function(e) {
+                        setTimeout(function(){
+                            movepic(img, e);
+                        },50);
+                    });
+                function movepic(img, e){
+                    var objL = img.parent().position().left,
+                        objT = img.parent().position().top,
+                        X = e.pageX,
+                        Y = e.pageY,
+                        defaultBorder =16, // 鼠标在图片范围内的临界点.
+                        roundX = objL + objParentW /2,
+                        roundY = objT + objParentH /2;
+                    var moveSpaceX = (X - roundX)/((objParentW - defaultBorder)/2),
+                        moveSpaceY = (roundY - Y)/((objParentH - defaultBorder)/2);
+                        if(moveSpaceX >1|| moveSpaceX <-1){
+                            moveSpaceX = Math.round(moveSpaceX);
+                        };
+                        if(moveSpaceY >1|| moveSpaceY <-1){
+                            moveSpaceY = Math.round(moveSpaceY);
+                        };
+                    if(img.data('top')){
+                        img.css('margin-top',img.data('top')*(1-moveSpaceY));
+                    };
+                    if(img.data('left')){
+                        img.css('margin-left',img.data('left')*(1+ moveSpaceX))
+                    };
+                };
+            };
+        </script>
+    </head>
+    <body>
+        <div>    
+            <ul class="pics-list">
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_001.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_002.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_003.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_004.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_005.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_006.jpg" onload="centerPics(this)"/></a></li>
+            </ul>
+			<ul class="pics-list" id="demo1">
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_001.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_002.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_003.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_004.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_005.jpg" onload="centerPics(this)"/></a></li>
+                <li><a href="#"><img src="http://images.cnblogs.com/cnblogs_com/noyobo/328764/o_006.jpg" onload="centerPics(this)"/></a></li>
+            </ul>
+        </div>
+    </body>
+</html>
+

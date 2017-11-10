@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试</title>
+    <script src="../js/vue.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .class1 {
+            background: #444;
+            color: #eee;
+        }
+
+        .progressBall {
+            width: 100px;
+            height: 100px;
+            border: 3px solid #ccc;
+            border-radius: 50%;
+        }
+
+        /*@keyframes rotateAn {*/
+            /*0% {*/
+                /*transform: rotate(0deg);*/
+            /*}*/
+            /*99% {*/
+                /*transform: rotate(180deg);*/
+                /*opacity: 0.8;*/
+            /*}*/
+            /*100% {*/
+                /*transform: rotate(180deg);*/
+                /*opacity: 0;*/
+            /*}*/
+        /*}*/
+
+        .circle-dev {
+            width: 200px;
+            height: 200px;
+            border-radius: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .circle-bg, .circle-alt {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #ccc;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .circle-alt {
+            opacity: 0.4;
+        }
+
+        .circle-alt-lft, .circle-alt-rht {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            top: 0;
+        }
+
+        .circle-alt-lft {
+            left: 0;
+            overflow: hidden;
+            border-radius: 50% 0 0 50%;
+        }
+
+        .circle-alt-lft:after {
+            background: #fff;
+            opacity: 0.8;
+            display: block;
+            content: "";
+            width: 100%;
+            height: 100%;
+            transform-origin: right center;
+            /*animation: rotateAn 1s 1s linear forwards;*/
+        }
+
+        .circle-alt-rht {
+            right: 0;
+            overflow: hidden;
+            border-radius: 0 50% 50% 0;
+        }
+
+        .circle-alt-rht:after {
+            background: #fff;
+            opacity: 0.8;
+            display: block;
+            content: "";
+            width: 100%;
+            height: 100%;
+            transform-origin: left center;
+            /*animation: rotateAn 1s linear forwards;*/
+        }
+
+        .container {
+            width: 306px;
+            margin: 0 auto;
+            border: 1px solid #cccccc;
+        }
+        .container li {
+            float: left;
+            list-style: none;
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div v-html="title"></div>
+
+    <p>{{ message | capitalize }}</p>
+
+    <p v-if="seen">现在你看到我了</p>
+
+    <label for="r1">修改颜色</label><input type="checkbox" v-model="class1" id="r1">
+    <br>class1: {{ class1 }}<br>
+
+    <div v-bind:class="{'class1': class1}">
+        directiva v-bind:class
+    </div>
+
+    <p>原始字符串: {{ userInput }}</p>
+
+    <p>计算后反转字符串: {{ reversedMessage }}</p>
+    <label for="r2">用户输入：<input type="text" v-model="userInput" id="r2"></label>
+    <button v-on:click.stop.prevent.capture.self="reverseMessage">反转</button>
+
+    <template v-if="ok == 1">
+        <p v-html="title"></p>
+
+        <p>学的不仅是技术，更是梦想！</p>
+    </template>
+    <template v-else-if="ok == 2">
+        <p>哈哈哈，打字辛苦啊！！！</p>
+    </template>
+    <template v-else>
+        <p>不知道写什么了。。。</p>
+    </template>
+
+    <p>
+        <child message="hello world!!!"></child>
+        <searchBox message="hello world!!!"></searchBox>
+    </p>
+
+    <div class="circle-dev">
+        <div class="circle-bg"></div>
+        <div class="circle-alt">
+            <div class="circle-alt-lft"></div>
+            <div class="circle-alt-rht"></div>
+        </div>
+    </div>
+
+    <ol>
+        <template v-for="site in sites">
+            <li>{{ site.name }}</li>
+        </template>
+    </ol>
+</div>
+
+<div class="container">
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+        <li>10</li>
+        <li>11</li>
+        <li>12</li>
+        <li>13</li>
+        <li>14</li>
+        <li>15</li>
+        <li>16</li>
+        <li>17</li>
+        <li>18</li>
+        <li>19</li>
+        <li>20</li>
+        <li>21</li>
+        <li>22</li>
+        <li>23</li>
+        <li>24</li>
+    </ul>
+</div>
+
+<canvas id="canvas" width="1000" height="800">Canvas no support!!!</canvas>
+
+<script>
+    // 注册
+//    Vue.component('child', {
+//        // 声明 props
+//        props: ['message'],
+//        // 同样也可以在 vm 实例中像 “this.message” 这样使用
+//        template: '<span>{{ message }}</span>'
+//    });
+
+    new Vue({
+        el: '#app',
+        data: {
+            title: '<h2>Vue测试</h2>',
+            message: 'hello Vue.js!',
+            seen: true,
+            ok: 1,
+            class1: false,
+            userInput: "用户输入",
+            sites: [
+                {name: 'Runoob'},
+                {name: 'Google'},
+                {name: 'Taobao'}
+            ]
+        },
+        methods: {
+            reverseMessage: function () {
+                this.userInput = this.userInput.split('').reverse().join('');
+            }
+        },
+        computed: {
+            // 计算属性的 getter
+            reversedMessage: function () {
+                // `this` 指向 vm 实例
+                return this.userInput.split('').reverse().join('')
+            }
+        },
+        filters: {
+            capitalize: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        }
+    });
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+//    var p = new Path2D('M -94.80001 -94.8 L 94.79999 -94.8 L 94.79999 94.8 L -94.80001 94.8 Z');
+//    ctx.fill(p);
+
+    var width = 80, height = 72;
+
+    ctx.save();
+    ctx.fillStyle = "#FFFFFF";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(width, 0);
+    ctx.lineTo(width, height);
+    ctx.lineTo(0, height);
+    ctx.lineTo(0, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+</script>
+</body>
+</html>

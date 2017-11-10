@@ -1,0 +1,21 @@
+var Lan = {
+    zh: "中文",
+    en: "English",
+    ja: "にんほんご",
+    groupName: "FusionSolar",
+    groupSubName: "analysis system",
+    inputUsername: "input username",
+    inputPassword: "input password",
+    login: "login",
+    FusionSolar: "FusionSolar analysis system",
+    loginError: "can not login, please try to refresh this page!",
+    sure: "sure",
+    cancel: "cancel",
+    browserInfluence: "The browser is not chrome,may influence page's display!",
+    notChrome: "The browser is not chrome, are you sure download the recommended browser",
+    browserTip_one: "1.It will install silently.",
+    browserTip_two: "2.Wait a moment,if there is a icon of chrome that shows on desktop, it means install successfully.",
+    browserTip_three: "3.if you use a chrome that is not the recommended version, please uninstall it before install.",
+    browserTip_four: "4.if you has no chrome in your computer, you can install it directly.",
+    declareMessage: "declare:"
+};

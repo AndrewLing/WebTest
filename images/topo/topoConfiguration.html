@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>组态配置</title>
+    <link type="text/css" href="../../css/module/topo/themes/base/jquery.ui.all.css" rel="stylesheet" />
+    <link type="text/css" href="../../css/module/topo/demos.css" rel="stylesheet" />
+	<script type="text/javascript" src="../../js/module/topo/lib/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/external/jquery.bgiframe-2.1.1.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.mouse.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.button.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.draggable.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.position.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.resizable.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.position.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.ui.dialog.js"></script>
+	<script type="text/javascript" src="../../js/jquery/Cookies.js"></script>
+	<script type="text/javascript" src="../../js/module/topo/ui/jquery.effects.core.js"></script>
+	<script type="text/javascript" src="../../js/globle/globle.js"></script>
+    <script type="text/javascript" src="../../js/module/topo/lib/twaver.js"></script>
+    <script type="text/javascript" src="../../js/module/topo/lib/demo.js"></script>
+    <script type="text/javascript" src="../../js/module/topo/common/topoUtil.js"></script>
+    <script type="text/javascript" src="../../js/module/topo/common/topoConfiguration.js"></script>
+    <script type="text/javascript">
+       var topoConfiguration = new TopoConfiguration();
+    </script>
+</head>
+<body onload="topoConfiguration.init();">
+    <input type="hidden" id="topoGraphId">
+    <div id='main'></div>
+    <div id="dlgChoDev"  title="关联设备" >
+     <label>请选择关联设备：</label>
+     <select id="selectedDecice">
+	       
+     </select>
+    </div>
+    
+    <div id="dlgChoDevSig"   title="关联设备信号">
+     <label>请选择关联信号：</label>
+     <div id="selectedSignal">
+     </div>
+    </div>
+    
+    <div id="dlgChoAssNode"  title="关联图元">
+     <label>请选择关联图元：</label>
+     <select id="selectedNode">
+     </select>
+      <div id="selectedSignal1">
+     </div>
+    </div>
+    
+    
+</body>
+</html>

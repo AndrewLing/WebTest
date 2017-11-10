@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='./js/mapTools/MapBox/mapbox.js'></script>
+    <link href='./js/mapTools/MapBox/mapbox.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+    <script>
+        L.mapbox.accessToken = 'pk.eyJ1IjoiYW5kcmV3bGluZyIsImEiOiJjaXNqenVpZHUwMzRhMnVvYzh1b2FhMGxqIn0.hwtQaUVHYVySv9ak_ddHbw';
+//        L.mapbox.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpbG10dnA3NzY3OTZ0dmtwejN2ZnUycjYifQ.1W5oTOnWXQ9R1w8u3Oo1yA';
+        L.mapbox.config.FORCE_HTTPS = true;
+        L.mapbox.config.HTTPS_URL = 'https://api.mapbox.com/v4';
+    </script>
+</head>
+<body>
+
+<div id="map"></div>
+<script>
+    var map = L.mapbox.map('map').setView([30.657406, 104.06559], 3);
+
+//    L.mapbox.styleLayer('mapbox://styles/mapbox/satellite-streets-v9').addTo(map);
+    L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v10').addTo(map);
+    map.addControl(L.mapbox.legendControl());
+</script>
+
+</body>
+</html>

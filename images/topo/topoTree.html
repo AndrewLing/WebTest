@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>TopoTree</title>
+    <link rel="stylesheet" href="../../css/jquery-ui/1.11.1/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="../../css/third-party/zTreeStyle/zTreeStyle.css"/>
+</head>
+<body>
+<ul id="treeCtrl">
+    <li>
+        <button id="addNode">addNode</button>
+    </li>
+    <li>
+        <button id="addFolder">addFolder</button>
+    </li>
+    <li>
+        <button id="renameNode">renameNode</button>
+    </li>
+    <li>
+        <button id="removeNode">removeNode</button>
+    </li>
+</ul>
+<ul id="topoTree" class="ztree"></ul>
+
+<script src="../../js/jquery/1.11.1/jquery-1.11.1.min.js"></script>
+<script src="../../js/jquery-ui/1.11.1/jquery-ui.min.js"></script>
+<script src="../../js/jquery/Cookies.js"></script>
+<script src="../../js/globle/globle.js"></script>
+<script src="../../js/third-party/jquery.ztree.all-3.5.min.js"></script>
+<script>
+$(function () {
+    var url = '/cm/topoNodes';
+    var topoTreeSetting = {
+        view: {
+            showLine: false,
+            selectedMulti: false
+        },
+        edit: {
+            enable: true,
+            showRemoveBtn: false,
+            showRenameBtn: false,
+            drag: {
+                isMove: true,
+                prev: true,
+                inner: true,
+                next: true
+            }
+        },
+        callback: {
+            beforeDrag: function (treeId, treeNodes) {
+                var dragNode = treeNodes[0];
+                if (dragNode.parentId == 0) {
+                    alert('can not move this node');
+                    return false;
+                }
+            },
+            onDrag: function () {
+
+            },
+            beforeDrop: function () {
+
+            },
+            onDrop: function (event, treeId, treeNodes, targetNode, moveType) {
+                var willChangeNode = treeNodes[0];
+                var changeNode = {
+                    id: willChangeNode.id,
+                    name: willChangeNode.name,
+                    sequence: willChangeNode.sequence,
+                    parentId: targetNode.id
+                };
+                $.omcHttp.PUT(url + '/dragNode', changeNode, function (res) {
+                    alert(res.message);
+                    //topoTree.update(willChangeNode);
+                });
+            }
+        }
+    };
+
+
+    var topoTree;
+
+    function refreshNodeTree() {
+        $.omcHttp.GET('/cm/topoNodes', function (res) {
+            var data = res.data;
+            $.fn.zTree.init($('#topoTree'), topoTreeSetting, data);
+            topoTree = $.fn.zTree.getZTreeObj('topoTree');
+        });
+    }
+
+    refreshNodeTree();
+
+    $('#treeCtrl').find('button').on('click', function () {
+        var selectedNodes = topoTree.getSelectedNodes();
+        var ctrlId = $(this).attr('id');
+        if ('addFolder' !== ctrlId && selectedNodes.length != 1) {
+            alert('please select a node');
+            return false;
+        }
+        var selectedNode = selectedNodes[0];
+        switch (ctrlId) {
+            case 'addNode':
+                addNode(selectedNode);
+                break;
+            case 'addFolder':
+                addFolder(selectedNode);
+                break;
+            case 'renameNode':
+                renameNode(selectedNode);
+                break;
+            case 'removeNode':
+                removeNode(selectedNode);
+                break;
+            default :
+                alert('not support action');
+        }
+    });
+
+    function removeNode(selectedNode) {
+        if (window.confirm('Do you want to delete it?')) {
+            $.omcHttp.DELETE(url + '/' + selectedNode.id, function(res) {
+                if(res.success){
+                    alert(res.message);
+                    topoTree.removeNode(selectedNode);
+                }
+            })
+        }
+
+    }
+
+    function addNode(selectedNode) {
+        $.omcHttp.GET('/cm/confSchemeTypeInfos', function (res) {
+            if (res.success) {
+                var selectionData = res.data;
+                var slectionType = '<select id="confSchemeTypeInfoAdd">';
+                for (var i in selectionData) {
+                    slectionType += '<option value="' + selectionData[i].id + '">' + selectionData[i].name + '</option>';
+                }
+                slectionType += '</select>';
+                var dialogContent = '<div id="popDialogAdd"><label for="topoNameAdd">Topo Name:</label><input id="topoNameAdd"/><br/><label for="confSchemeTypeInfoAdd">schemeType:</label><br/>' + slectionType + '<br/><div id="standardCodeDivAdd"><label for="standardCodeAdd">standardCode:</label><input id="standardCodeAdd" type="text"/></div></div>';
+                $(dialogContent).appendTo($('body'));
+                $('#confSchemeTypeInfoAdd').on('change', function () {
+                    var typeCode = $(this).children('option:checked').val();
+                    if (typeCode == 5) {
+                        $('#standardCodeDivAdd').hide();
+                    } else {
+                        $('#standardCodeDivAdd').show();
+                    }
+                });
+                $('#popDialogAdd').dialog({
+                    title: "input node name",
+                    closeText: 'cacel',
+                    modal: true,
+                    buttons: [
+                        {
+                            text: "Ok",
+                            click: function () {
+                                var inputtopoName = $('#topoNameAdd').val();
+                                //                            if (!/^[a-z0-9_-]{3,16}$/.test(inputtopoName)) {
+                                if (inputtopoName == '') {
+                                    alert('invalid node name!');
+                                    return false;
+                                }
+                                var selectTypeId = $('#confSchemeTypeInfoAdd').find('option:selected').val();
+                                if (selectTypeId == '') {
+                                    alert('invalid schemeType');
+                                    return false;
+                                }
+
+                                var standardCode = $('#standardCodeAdd').val();
+                                if (selectTypeId != 5) {
+                                    if (standardCode == '') {
+                                        alert('invalid standarCode');
+                                        return false;
+                                    }
+                                }
+
+                                var newNode = {topoNode: {'name': inputtopoName, 'parentId': selectedNode.id},
+                                    schemeTypeId: selectTypeId,
+                                    standardCode: standardCode
+                                };
+                                $.omcHttp.POST(url, newNode, function (res) {
+                                    if (res.success) {
+                                        alert(res.message);
+                                        topoTree.addNodes(selectedNode, res.data.topoNode);
+                                        $('#popDialogAdd').remove();
+                                    }
+                                });
+
+                            }
+                        },
+                        {
+                            text: "cacel",
+                            click: function () {
+                                $('#popDialogAdd').remove();
+                            }
+                        }
+
+                    ],
+                    close: function () {
+                        $('#popDialogAdd').remove();
+                    }
+                });
+            }
+        });
+    }
+
+    function addFolder(selectedNode) {
+        var dialogContent = '<div id="popDialogAddFolder"><label for="topoNameAddFolder">Topo Name:</label><input id="topoNameAddFolder"/></div>';
+        $(dialogContent).dialog({
+            title: "input node name",
+            closeText: 'cacel',
+            modal: true,
+            buttons: [
+                {
+                    text: "Ok",
+                    click: function () {
+                        var inputtopoName = $('#topoNameAddFolder').val();
+                        //                            if (!/^[a-z0-9_-]{3,16}$/.test(inputtopoName)) {
+                        if (inputtopoName == '') {
+                            alert('invalid node name!');
+                            return false;
+                        }
+                        var newFolder = {
+                            "topoNode": {"name": inputtopoName, "parentId": 0},
+                            "schemeTypeId": "",
+                            "standardCode": ""
+                        };
+                        $.omcHttp.POST(url, newFolder, function (res) {
+                            if (res.success) {
+                                alert(res.message);
+                                topoTree.addNodes(selectedNode, res.data);
+                                $('#popDialogAddFolder').remove();
+                            }
+                        });
+
+                    }
+                },
+                {
+                    text: "cacel",
+                    click: function () {
+                        $('#popDialogAddFolder').remove();
+                    }
+                }
+            ],
+            close: function () {
+                $('#popDialogAddFolder').remove();
+            }
+        });
+    }
+
+    function renameNode(selectNode) {
+        var isFirstLevelNode = selectNode.parentId === 0;
+        if (isFirstLevelNode) {
+            var dialogContent = '<div id="popDialogRenameFolder"><label for="topoNameRenameFolder">Topo Name:</label><input id="topoNameRenameFolder" value="' + selectNode.name + '"/>';
+            $(dialogContent).dialog({
+                title: 'update',
+                closeText: 'cancel',
+                modal: true,
+                buttons: [
+                    {
+                        text: 'ok',
+                        click: function () {
+                            var newName = $('#topoNameRenameFolder').val();
+                            var updateFolder = {
+                                "topoNode": {"id": selectNode.id, "name": newName, "parentId": selectNode.parentId, "sequence": selectNode.sequence},
+                                "schemeTypeId": "",
+                                "standardCode": ""
+                            };
+                            $.omcHttp.PUT(url, updateFolder, function (res) {
+                                if (res.success) {
+                                    alert(res.message);
+                                    selectNode.name = newName;
+                                    topoTree.updateNode(selectNode);
+                                    $('#popDialogRenameFolder').remove();
+                                }
+                            });
+
+                        }
+                    },
+                    {
+                        text: "cacel",
+                        click: function () {
+                            $('#popDialogRenameFolder').remove();
+                        }
+                    }
+                ],
+                close: function () {
+                    $('#popDialogRenameFolder').remove();
+                }
+            });
+        } else {
+            $.omcHttp.GET(url + '/' + selectNode.id, function (res) {
+                var data = res.data;
+                var topoNode = data.topoNode;
+
+                $.omcHttp.GET('/cm/confSchemeTypeInfos', function (res) {
+                    if (res.success) {
+                        var selectionData = res.data;
+                        /* var slectionType = '<select id="confSchemeTypeInfoRenameNode">';
+                         for (var i in selectionData) {
+                         if(data.schemeTypeId == selectionData[i].id){
+                         slectionType += '<option value="' + selectionData[i].id + '" selected>' + selectionData[i].name + '</option>';
+                         } else {
+                         slectionType += '<option value="' + selectionData[i].id + '">' + selectionData[i].name + '</option>';
+                         }
+                         }
+                         slectionType += '</select>';*/
+                        var dialogContent = '<div id="popDialogRenameNode"><label for="topoNameRenameNode">Topo Name:</label><input id="topoNameRenameNode" value="' + topoNode.name + '"/><br/><div id="standardCodeDivRenameNode"><label for="standardCodeRenameNode">standardCode:</label><input id="standardCodeRenameNode" type="text" value="' + data.standardCode + '"/></div></div>';
+                        $(dialogContent).appendTo($('body'));
+                        if (data.schemeTypeId == 5) {
+                            $('#standardCodeDivRenameNode').hide();
+                        }
+                        /*$('#confSchemeTypeInfoRenameNode').on('change', function () {
+                         var typeCode = $(this).children('option:checked').val();
+                         if (typeCode == 5) {
+                         $('#standardCodeDivRenameNode').hide();
+                         } else {
+                         $('#standardCodeDivRenameNode').show();
+                         }
+                         });*/
+                        $('#popDialogRenameNode').dialog({
+                            title: 'update',
+                            closeText: 'cancel',
+                            modal: true,
+                            buttons: [
+                                {
+                                    text: "Ok",
+                                    click: function () {
+                                        var inputtopoName = $('#topoNameRenameNode').val();
+                                        //                            if (!/^[a-z0-9_-]{3,16}$/.test(inputtopoName)) {
+                                        if (inputtopoName == '') {
+                                            alert('invalid node name!');
+                                            return false;
+                                        }
+                                        var selectTypeId = $('#confSchemeTypeInfoRenameNode').find('option:selected').val();
+                                        if (selectTypeId == '') {
+                                            alert('invalid schemeType');
+                                            return false;
+                                        }
+
+                                        var standardCode = $('#standardCodeRenameNode').val();
+                                        if (standardCode == '') {
+                                            alert('invalid standarCode');
+                                            return false;
+                                        }
+
+                                        if (data.schemeTypeId == 5) {
+                                            standardCode = data.standardCode;
+                                        }
+                                        var updateNode = {"topoNode": {"id": selectNode.id, "name": inputtopoName, "sequence": selectNode.sequence, "parentId": selectNode.parentId},
+                                            "schemeTypeId": data.schemeTypeId,
+                                            "standardCode": standardCode
+                                        };
+                                        $('#popDialogRenameNode').remove();
+                                        $.omcHttp.PUT(url, updateNode, function (res) {
+                                            if (res.success) {
+                                                alert(res.message);
+                                                var resNode = res.data;
+                                                selectNode.name = resNode.name;
+                                                selectNode.sequence = resNode.sequence;
+                                                selectNode.parentId = resNode.parentId;
+                                                topoTree.updateNode(selectNode);
+                                                $('#popDialogRenameNode').remove();
+                                            }
+                                        });
+
+                                    }
+                                },
+                                {
+                                    text: "cacel",
+                                    click: function () {
+                                        $('#popDialogRenameNode').remove();
+                                    }
+                                }
+                            ],
+                            close: function () {
+                                $('#popDialogRenameNode').remove();
+                            }
+                        });
+                    }
+                });
+
+            })
+        }
+    };
+
+    /*function doCUAction(action, selectedNode) {
+     $.omcHttp.GET('/cm/confSchemeTypeInfos', function (res) {
+     if (res.success) {
+     var selectionData = res.data;
+     var slectionType = '<select id="confSchemeTypeInfo">';
+     for (var i in selectionData) {
+     slectionType += '<option value="' + selectionData[i].objectTypeId + '">' + selectionData[i].name + '</option>';
+     }
+     slectionType += '</select>'
+     var dialogContent = '<div><label for="">Topo Name:</label><input id="topoName"/><br/><label for="">schemeType:</label>' + slectionType + '<br/><label for="">standardCord:</label><input id="standardCode" type="text"/></div>';
+     var isRenameAction = 'renameNode' === action;
+     if (isRenameAction) {
+     dialogContent = '<div><input id="topoName" value="' + selectedNode.name + '"/><br/><input id="schemeTypeId" type="text"/><br/><input id="standardCode" type="text"/></div>';
+     }
+     $(dialogContent).dialog({
+     title: "input node name",
+     closeText: 'cacel',
+     modal: true,
+     buttons: [
+     {
+     text: "Ok",
+     click: function () {
+     var inputtopoName = $('#topoName').val();
+     //                            if (!/^[a-z0-9_-]{3,16}$/.test(inputtopoName)) {
+     if (inputtopoName == '') {
+     alert('invalid node name!');
+     return false;
+     }
+     var selectTypeId = $('#confSchemeTypeInfo').find('option:selected').val();
+     if (selectTypeId == '') {
+     alert('invalid schemeType');
+     return false;
+     }
+
+     var standardCode = $('#standardCode').val();
+     if (standardCode == '') {
+     alert('invalid standarCode');
+     return false;
+     }
+     if (isRenameAction) {
+     var renameNode = {
+     topoNode: {
+     id: selectedNode.id,
+     name: inputtopoName,
+     sequence: selectedNode.sequence,
+     parentId: selectedNode.parentId
+     },
+     schemeTypeId: selectTypeId,
+     standardCode: standardCode
+     };
+     selectedNode.name = inputtopoName;
+     $.omcHttp.PUT(url, renameNode, function (res) {
+     if (res.success) {
+     alert(res.message);
+     topoTree.updateNode(selectedNode);
+
+     }
+     });
+     }
+     else if ('addNode' === action) {
+     var newNode = {topoNode: {'name': inputtopoName, 'parentId': selectedNode.id},
+     schemeTypeId: selectTypeId,
+     standardCode: standardCode
+     };
+     $.omcHttp.POST(url, newNode, function (res) {
+     if (res.success) {
+     alert(res.message);
+     topoTree.addNodes(selectedNode, newNode);
+     }
+     });
+     } else if ('addFolder' === action) {
+     var newFolder = {topoNode: {'name': inputtopoName, 'parentId': 0},
+     schemeTypeId: selectTypeId,
+     standardCode: standardCode
+     };
+     $.omcHttp.POST(url, newFolder, function (res) {
+     if (res.success) {
+     alert(res.message);
+     topoTree.addNodes(selectedNode, newFolder.topoNode);
+     }
+     });
+     } else {
+     alert('not support action!')
+     }
+
+     $(this).dialog("destroy");
+     }
+     },
+     {
+     text: "cacel",
+     click: function () {
+     $(this).dialog("destroy");
+     }
+     }
+     ]});
+     }
+     });
+     }*/
+
+});
+</script>
+</body>
+</html>

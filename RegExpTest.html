@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="./js/jquery/jquery.js" type="text/javascript"></script>
+    <style>
+        * {
+            font-family: "Courier New", Courier, mono;
+        }
+        textarea {
+            resize: none;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var regExp = $("#regExp");
+            var value = $("#value");
+            var testBtn = $("#testBtn");
+
+            testBtn.click(function () {
+                var regex = regExp.val();
+                var test = value.val();
+                var reg = new RegExp(regex.replace(/\s+/g, ''));
+                var result = reg.test(test);
+//                console.log(reg.source);
+                $('#result').text("----->" + result);
+//                alert(result);
+            });
+        });
+    </script>
+</head>
+<body>
+<textarea id="regExp" wrap="hard" rows="46" cols="200"></textarea>
+<textarea id="value" wrap="hard" rows="2" cols="200"></textarea>
+<button id="testBtn" type="button">验证</button>
+<p id="result"></p>
+</body>
+</html>

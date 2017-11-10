@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            position: relative;
+        }
+        .draggable {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .draggable li {
+            width: 100px;
+            height: 100px;
+            background: #ccc;
+            list-style: none;
+            border: 1px solid #000;
+            z-index: 10;
+        }
+
+        .droppable {
+            position: absolute;
+            top: 0;
+            left: 250px;
+        }
+        .droppable li {
+            width: 125px;
+            height: 125px;
+            background: #999;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #000;
+            z-index: 0;
+        }
+    </style>
+
+    <script src="./js/jquery/jquery.js"></script>
+    <script src="./js/jquery/ui.js"></script>
+</head>
+<body>
+
+<div class="draggable">
+    <ul>
+        <li draggable="true">1234567890</li>
+        <li draggable="true">abc...xyz</li>
+    </ul>
+</div>
+
+<div class="droppable">
+    <ul>
+    </ul>
+</div>
+
+<script>
+    $( ".draggable li" ).css({'cursor': 'move'}).draggable({
+        appendTo: 'body',
+        opacity: 0.8,
+        cursor: 'crosshair',
+        cursorAt: {left: -5, top: -5},
+        distance: 5,
+        helper: function (event) {
+            return "<div class='alarm-crosshair' style='border: 1px solid #ccc;" +
+                    " padding: 5px 10px; border-radius: 10px; border-top-left-radius: 0; color: #fff;'>" +
+                    "这是拖动块" + "</div>";
+        },
+        snap: true,
+        scroll: false,
+        stop: function (event, ui) {debugger
+            var target = event.toElement;
+            console.log(event, ui, target);
+        }
+    });
+
+    createDropBox(2);
+    function createDropBox (n) {
+        while (n > 0) {
+            var li = $('<li>').attr('data-index', n);
+            setTimeout((function (li) {
+                $('.droppable ul').append(li);
+            })(li), 200);
+            li.droppable({
+                //        accept: '.alarm-crosshair',
+                //        greedy: true,
+                activate: function (event, ui) {
+                    console.log('activate', event, ui);
+                },
+                create: function (event, ui) {
+                    console.log('create', event, ui);
+                },
+                deactivate: function (event, ui) {
+                    console.log('deactivate', event, ui);
+                },
+                drop: function (event, ui) {
+                    console.log('drop', event, ui);
+                },
+                out: function (event, ui) {
+                    console.log('out', event, ui);
+                },
+                over: function (event, ui) {
+                    console.log('over', event, ui);
+                }
+            });
+            n--;
+        }
+    }
+</script>
+
+</body>
+</html>

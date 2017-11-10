@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>jQuery-Timer</title>
+
+    <script src="./js/jquery/jquery.js"></script>
+    <script src="./js/jquery/plugins/Timer.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .tabs {
+            height: 26px;
+            border-bottom: 1px solid #cccccc;
+        }
+        .tabs li {
+            float: left;
+            padding: 4px 15px;
+            color: #232323;
+            background: #FFFFFF;
+            border-radius: 4px 4px 0 0;
+            list-style: none;
+        }
+        .tabs li.selected {
+            color: #F5F5F5;
+            background: #00DE15;
+        }
+        .content-box {
+            border: 1px solid #C0C0C0;
+        }
+        .content-box .content-item {
+            display: none;
+        }
+        .content-box .content-item.selected {
+            display: block;
+        }
+        .show-contents {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="counter">0</div>
+<ul class="tabs">
+    <li target="1">Tab1</li>
+    <li target="2">Tab2</li>
+</ul>
+
+<div class="content-box">
+</div>
+
+<div class="show-contents">
+    <div target-id="1">Tab1 内容 <span id="counter1">0</span></div>
+    <div target-id="2">Tab2 内容 <span id="counter2">0</span></div>
+</div>
+
+<script>
+    $(function () {
+        var render = function (n) {
+            switch (n) {
+                case "1":
+                    $('#counter1').everyTimer('1s', function (counter) {
+                        console.log('#counter1', counter);
+                        $(this).text(counter);
+                    });
+                    break;
+                case "2":
+                    break;
+            }
+        };
+        $('#counter').everyTimer('1s', function (counter) {
+            console.log('#counter', counter);
+            $(this).text(counter);
+        });
+
+        $('.tabs li').click(function () {
+            var tabID = $(this).attr('target');
+            $(this).siblings('li').removeClass('selected');
+            $(this).addClass('selected');
+
+            var content = $('.show-contents [target-id=' + tabID + ']').html();
+            $('.content-box').html(content);
+
+            render(tabID);
+        });
+
+        $('.tabs li').eq(0).click();
+    });
+</script>
+</body>
+</html>

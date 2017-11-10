@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>google地图测试</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+
+        #mapContainer {
+            min-height: 500px;
+            background: antiquewhite;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #tip {
+            height: 45px;
+            background-color: #fff;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: 1px solid #969696;
+            position: absolute;
+            font-size: 12px;
+            right: 10px;
+            bottom: 30px;
+            border-radius: 3px;
+            line-height: 45px;
+        }
+
+        #tip input[type='button'] {
+            height: 28px;
+            line-height: 28px;
+            outline: none;
+            text-align: center;
+            padding-left: 5px;
+            padding-right: 5px;
+            color: #FFF;
+            background-color: #0D9BF2;
+            border: 0;
+            border-radius: 3px;
+            margin-top: 8px;
+            margin-left: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        /*.gmap-marker-labels {*/
+            /*max-width: 148px;*/
+            /*position: absolute;*/
+            /*font-size: 12px;*/
+            /*color: #FEFEFE;*/
+            /*background: #0E75DB;*/
+            /*padding: 0 5px;*/
+            /*text-align: center;*/
+            /*border: 1px solid #0D5194;*/
+            /*box-shadow: 2px 2px 2px rgba(35, 35, 35, 0.5);*/
+            /*border-radius: 2px;*/
+            /*display: block;*/
+            /*overflow: hidden;*/
+            /*text-overflow: ellipsis;*/
+            /*white-space: nowrap;*/
+        /*}*/
+
+    </style>
+
+    <script type="text/javascript" src="js/jquery/jquery.js"></script>
+</head>
+<body>
+<div id="mapContainer"></div>
+<div>
+    <ul>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+    </ul>
+</div>
+<!--<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=77c9006122a14e0948e43e1a7a5441d7"></script>-->
+<!--<script type="text/javascript" src="js/mapTools/AMapUtil.js"></script>-->
+<script type="text/javascript" src="js/mapTools/MapTools.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var cluster, mass;
+        var markers = [];
+        var defaultPoint = {name: '', lng: 104.065745, lat: 30.657452}; // 104.065745,30.657457
+
+        MapTools.mapType = 'AMap';
+        MapTools.ready(function () {
+            var map = MapUtil.Config("mapContainer", $.extend(MapUtil.OptionTemplates.default, {
+                center: [defaultPoint.lng, defaultPoint.lat],
+                lang: 'en',
+                zoomLevel: 4,
+                mapType: 0
+            })).Instance().option.map;
+
+            var size = 5;
+//            var points = [];
+            for (var i = 0; i < size; i++) {
+                var lng = defaultPoint.lng + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1));
+                var lat = defaultPoint.lat + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1));
+                var markerPosition = MapUtil.createPoint(lng, lat);
+//                points[i] = [lng, lat];
+                var marker = MapUtil.createMarker(markerPosition, {
+                    id: "" + i,
+                    width: 25,
+                    height: 38,
+                    icon: './images/mapPoint/mid/map_point_1X0.png',
+                    title: 'Num ' + size,
+                    label: 'Num ' + size + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.slice(Math.abs(Math.random() * 26), Math.abs(Math.random() * 26)),
+//                    label: 'Num ' + size,
+                    offset: {x: -12.5, y: -32},
+                    cursor: 'pointer',
+                    events: {
+                        click: function (e) {
+                            alert("adfasdfasdf");
+                            console.log(e);
+                        }
+                    }
+                });
+                markers.push(marker);
+            }
+//            MapUtil.polyline(map, points);
+
+//            cluster = MapUtil.addCluster(map, cluster, markers);
+
+            var ms = [];
+            var s = 500;
+            while(s--) {
+                var lng = defaultPoint.lng + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1));
+                var lat = defaultPoint.lat + (Math.random() * 5 * (Math.random() > 0.5 ? 1 : -1));
+                ms.push({name: 'size' + s, lnglat: [lng, lat]});
+            }
+            mass = MapUtil.addMassMarkers(map, mass, ms);
+        });
+
+    });
+</script>
+</body>
+</html>

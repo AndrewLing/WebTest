@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Canvas Test</title>
+    <script src="./js/jquery/jquery.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "Microsoft YaHei", "Century Gothic", "Arial", "宋体", "Tahoma", "Verdana", "SimSun";
+            outline: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        #container {
+            height: 800px;
+        }
+
+        .content {
+            position: relative;
+            width: 800px;
+            margin: 20px auto;
+        }
+
+        .canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 800px;
+            height: 800px;
+        }
+
+        .btn {
+            padding: 2px 15px;
+            height: 50px;
+            color: #ffffff;
+            font-size: 18pt;
+            background-color: gray;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .btn:hover {
+            background-color: forestgreen;
+        }
+
+        .btn.enable {
+            background-color: forestgreen;
+        }
+
+        .btn1 {
+            width: 200px;
+            height: 50px;
+        }
+
+        .dialog-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .dialog {
+            position: absolute;
+            top: 10px;
+            left: calc(50% - 150px);
+            width: 300px;
+            padding: 20px 10px;
+            background-color: #fff;
+            border: 1px outset #cccccc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<section id="container" class="content">
+    <canvas id="canvas_bg" width="800" height="800"></canvas>
+    <canvas id="canvas" class="canvas" width="800" height="800"></canvas>
+</section>
+<section class="content">
+    <button id="toUser" type="button" class="btn btn1">玩家对战</button>
+    <button id="toAI" type="button" class="btn btn1 enable">人机对战</button>
+</section>
+
+<script>
+    function Game(id) {
+
+        this.init = function () {
+            this.initData();
+            this.draw();
+            this.bindEvents();
+        };
+
+        this.initData = function () {
+            var canvas = document.getElementById(id);
+            if (canvas && canvas.getContext) {
+                this.ctx = canvas.getContext('2d');
+            }
+            this.size = $(canvas).width();
+            this.columns = 22;
+            this.isWell = false;
+            this.isAI = true;
+            this.currentNode = null;
+            this.curColor = -1;
+            this.nodes = [];
+
+            this.chessData = [];
+            for (var i = 0; i < this.columns - 1; i++) {
+                this.chessData[i] = [];
+                for (var j = 0; j < this.columns - 1; j++) {
+                    this.chessData[i][j] = 0;
+                }
+            }
+        };
+
+        this.draw = function () {
+            this.clear(this.ctx);
+            this.drawBG();
+        };
+
+        this.clear = function (ctx) {
+            ctx.clearRect(0, 0, this.size, this.size);
+        };
+
+        this.drawBG = function () {
+            var _this = this;
+            var canvas = document.getElementById(id + "_bg");
+            var ctx;
+            if (canvas && canvas.getContext) {
+                ctx = canvas.getContext('2d');
+            }
+            _this.clear(ctx);
+
+            var x = 0, y = 0, size = _this.size / _this.columns;
+            ctx.lineWidth = 3;
+            ctx.strokeRect(0, 0, _this.size, _this.size);
+            ctx.lineWidth = 0.5;
+            ctx.strokeStyle = "rgba(124,124,124,0.8)";
+            ctx.strokeRect(size, size, _this.size - 2 * size, _this.size - 2 * size);
+            for (var i = 1; i < _this.columns - 1; i++) {
+                y = i * size;
+                for (var j = 1; j < _this.columns - 1; j++) {
+                    x = j * size;
+                    ctx.strokeRect(x, y, size, size);
+                }
+            }
+        };
+
+        this.drawNodes = function (node) {
+            var _this = this;
+            var nodes = _this.nodes;
+            var size = _this.size / _this.columns;
+            _this.clear(_this.ctx);
+            $.each(nodes, function (i, node) {
+                var r = 0, g = 0, b = 0;
+                var color = node.color || _this.curColor;
+                if (color > 0) {
+                    r = 255, g = 255, b = 255;
+                }
+                _this.ctx.fillStyle = "rgba(" + r + "," + g + "," + b + ",0.8)";
+                _this.ctx.strokeStyle = "rgba(100,100,100,0.8)";
+                _this.ctx.save();
+                _this.ctx.beginPath();
+                _this.ctx.arc(node.x * size, node.y * size, size / 2, 0, 2 * Math.PI);
+                _this.ctx.closePath();
+                _this.ctx.fill();
+                _this.ctx.stroke();
+                _this.ctx.restore();
+            });
+            _this.currentNode = node;
+            _this.calculable();
+        };
+
+        this.bindEvents = function () {
+            var _this = this;
+
+            document.getElementById('container').onmousedown = function (e) {
+                var x = e.offsetX, y = e.offsetY;
+                var size = _this.size / _this.columns;
+                var nodeX = Math.round(x / size), nodeY = Math.round(y / size);
+                console.log("下子：（" + x + "(" + nodeX + ")," + y + "(" + nodeY + ")）");
+                if (_this.doCheck(nodeX, nodeY) && _this.isAI) {
+                    _this.AIplay();
+                }
+            };
+            var userBtn = document.getElementById('toUser');
+            var aiBtn = document.getElementById('toAI');
+            userBtn.onclick = function () {
+                _this.isAI = false;
+                document.querySelector('.enable').setAttribute('class', 'btn btn1');
+                this.setAttribute('class', 'btn btn1 enable');
+            };
+            aiBtn.onclick = function () {
+                _this.isAI = true;
+                document.querySelector('.enable').setAttribute('class', 'btn btn1');
+                this.setAttribute('class', 'btn btn1 enable');
+            };
+        };
+
+        /**
+         * 判断该局棋盘是否赢了
+         */
+        this.calculable = function () {
+            var _this = this;
+
+            var node = _this.currentNode;
+
+            var points1 = [];
+            var points2 = [];
+            var points3 = [];
+            var points4 = [];
+            var count1 = 0;
+            var count2 = 0;
+            var count3 = 0;
+            var count4 = 0;
+
+            var x = node.x - 1, y = node.y - 1, chess = node.color;
+            //左右判断
+            for (var i = x; i >= 0; i--) {
+                if (_this.chessData[i][y] != chess) {
+                    break;
+                }
+                count1++;
+                points1.push({x: i, y: y});
+            }
+            for (var i = x + 1; i < _this.columns - 1; i++) {
+                if (_this.chessData[i][y] != chess) {
+                    break;
+                }
+                count1++;
+                points1.push({x: i, y: y});
+            }
+            //上下判断
+            for (var i = y; i >= 0; i--) {
+                if (_this.chessData[x][i] != chess) {
+                    break;
+                }
+                count2++;
+                points2.push({x: x, y: i});
+            }
+            for (var i = y + 1; i < _this.columns - 1; i++) {
+                if (_this.chessData[x][i] != chess) {
+                    break;
+                }
+                count2++;
+                points2.push({x: x, y: i});
+            }
+            //左上右下判断
+            for (var i = x, j = y; i >= 0, j >= 0; i--, j--) {
+                if (_this.chessData[i][j] != chess) {
+                    break;
+                }
+                count3++;
+                points3.push({x: i, y: j});
+            }
+            for (var i = x + 1, j = y + 1; i < _this.columns - 1, j < _this.columns - 1; i++, j++) {
+                if (_this.chessData[i][j] != chess) {
+                    break;
+                }
+                count3++;
+                points3.push({x: i, y: j});
+            }
+            //右上左下判断
+            for (var i = x, j = y; i >= 0, j < _this.columns - 1; i--, j++) {
+                if (_this.chessData[i][j] != chess) {
+                    break;
+                }
+                count4++;
+                points4.push({x: i, y: j});
+            }
+            for (var i = x + 1, j = y - 1; i < _this.columns - 1, j >= 0; i++, j--) {
+                if (_this.chessData[i][j] != chess) {
+                    break;
+                }
+                count4++;
+                points4.push({x: i, y: j});
+            }
+            if (count1 >= 5 || count2 >= 5 || count3 >= 5 || count4 >= 5) {
+                if (chess == 1) {
+                    _this.Utils.alert("白棋赢了");
+                }
+                else {
+                    _this.Utils.alert("黑棋赢了");
+                }
+                var points = [{x: x, y: y}];
+                count1 >= 5 && (points = points.concat(points1));
+                count2 >= 5 && (points = points.concat(points2));
+                count3 >= 5 && (points = points.concat(points3));
+                count4 >= 5 && (points = points.concat(points4));
+                _this.joinWinLine(points);
+                _this.isWell = true;//设置该局棋盘已经赢了，不可以再走了
+            }
+        };
+
+        /**
+         * 连接赢家棋子线
+         * @param {Object} points
+         */
+        this.joinWinLine = function (points) {
+            console.log('result:', points);
+            var _this = this;
+
+            points.sort(function (left, right) {
+                return (left.x + left.y) > (right.x + right.y);
+            });
+
+            var startP = points.shift();
+            var endP = points.pop();
+            var size = _this.size / _this.columns;
+
+            _this.ctx.strokeStyle = "#FF0000";
+            _this.ctx.lineWidth = 2;
+
+            _this.ctx.beginPath();
+
+            var spx = startP.x * size + size, spy = startP.y * size + size;
+            _this.ctx.arc(spx, spy, size / 4, 0, 2 * Math.PI, false);
+            _this.ctx.moveTo(spx, spy);
+
+            var epx = endP.x * size + size, epy = endP.y * size + size;
+            _this.ctx.lineTo(epx, epy);
+            _this.ctx.moveTo(epx + size / 4, epy);
+            _this.ctx.arc(epx, epy, size / 4, 0, 2 * Math.PI, false);
+
+            _this.ctx.closePath();
+            _this.ctx.stroke();
+        };
+
+        this.doCheck = function (x, y) {
+            var _this = this;
+            var color = -1 * _this.curColor;
+
+            if (x < 1 || x > _this.columns - 1 || y < 1 || y > _this.columns - 1)
+                return false;
+
+            var node = {x: x, y: y, color: color};
+            if (!(_this.isWell || _this.Utils.positionContains(_this.nodes, node))) {
+                _this.nodes.push(node);
+                _this.chessData[x - 1][y - 1] = color;
+            } else {
+                return false;
+            }
+            _this.curColor = node.color;
+            _this.drawNodes(node);
+            return true;
+        };
+
+        /**五子棋AI
+         *思路：对棋盘上的每一个空格进行估分，电脑优先在分值高的点落子
+         * 棋型：
+         * 〖五连〗只有五枚同色棋子在一条阳线或阴线上相邻成一排
+         * 〖成五〗含有五枚同色棋子所形成的连，包括五连和长连。
+         * 〖活四〗有两个点可以成五的四。
+         * 〖冲四〗只有一个点可以成五的四。
+         * 〖死四〗不能成五的四。
+         * 〖三〗在一条阳线或阴线上连续相邻的5个点上只有三枚同色棋子的棋型。
+         * 〖活三〗再走一着可以形成活四的三。
+         * 〖连活三〗即：连的活三（同色棋子在一条阳线或阴线上相邻成一排的活三）。简称“连三”。
+         * 〖跳活三〗中间隔有一个空点的活三。简称“跳三”。
+         * 〖眠三〗再走一着可以形成冲四的三。
+         * 〖死三〗不能成五的三。
+         * 〖二〗在一条阳线或阴线上连续相邻的5个点上只有两枚同色棋子的棋型。
+         * 〖活二〗再走一着可以形成活三的二。
+         * 〖连活二〗即：连的活二（同色棋子在一条阳线或阴线上相邻成一排的活二）。简称“连二”。
+         * 〖跳活二〗中间隔有一个空点的活二。简称“跳二”。
+         * 〖大跳活二〗中间隔有两个空点的活二。简称“大跳二”。
+         * 〖眠二〗再走一着可以形成眠三的二。
+         * 〖死二〗不能成五的二。
+         * 〖先手〗对方必须应答的着法，相对于先手而言，冲四称为“绝对先手”。
+         * 〖三三〗一子落下同时形成两个活三。也称“双三”。
+         * 〖四四〗一子落下同时形成两个冲四。也称“双四”。
+         * 〖四三〗一子落下同时形成一个冲四和一个活三。
+         * 分值表
+         * 成5:100000分
+         * 活4：10000分
+         * 活3+冲4:5000分
+         * 眠3+活2：2000分
+         * 眠2+眠1:1分
+         * 死棋即不能成5的是0分
+         * @return {[type]} [description]
+         */
+        this.getPosition = function () {
+            var _this = this;
+            var a = new Array(2);
+            var score = 0;
+            for (var x = 0; x < _this.columns - 1; x++) {
+                for (var y = 0; y < _this.columns - 1; y++) {
+                    if (_this.chessData[x][y] == 0) {
+                        var s = _this.judge(x, y);
+                        if (s > score) {
+                            score = s;
+                            a[0] = x;
+                            a[1] = y;
+                        }
+                    }
+                }
+            }
+            return a;
+        };
+
+        this.AIplay = function () {
+            var str = this.getPosition();
+            // console.log("智能AI将在下面坐标下棋：" + str[0] + "," + str[1]);
+            this.doCheck(str[0] + 1, str[1] + 1);
+        };
+
+        this.judge = function (x, y) {
+            var a = parseInt(this.leftRight(x, y, -1)) + parseInt(this.topBottom(x, y, -1)) + parseInt(this.rightBottom(x, y, -1)) + parseInt(this.rightTop(x, y, -1)) + 100; //判断白棋走该位置的得分
+            var b = parseInt(this.leftRight(x, y, 1)) + parseInt(this.topBottom(x, y, 1)) + parseInt(this.rightBottom(x, y, 1)) + parseInt(this.rightTop(x, y, 1)); //判断黑棋走该位置的得分
+//            console.log("位置（" + x + "," + y + "）:" + (a + b));
+            return a + b;
+        };
+
+        this.leftRight = function (x, y, num) {
+            var death = 0; //0表示两边都没堵住,且可以成5，1表示一边堵住了，可以成5,2表示是死棋，不予考虑
+            var live = 0;
+            var count = 0;
+            var arr = new Array(this.columns - 1);
+            for (var i = 0; i < this.columns - 1; i++) {
+                arr[i] = new Array(this.columns - 1);
+                for (var j = 0; j < this.columns - 1; j++) {
+                    arr[i][j] = this.chessData[i][j];
+                }
+            }
+            arr[x][y] = num;
+            for (var i = x; i >= 0; i--) {
+                if (arr[i][y] == num) {
+                    count++;
+                } else if (arr[i][y] == 0) {
+                    live += 1; //空位标记
+                    i = -1;
+                } else {
+                    death += 1; //颜色不同是标记一边被堵住
+                    i = -1;
+                }
+            }
+            for (var i = x; i <= this.columns - 2; i++) {
+                if (arr[i][y] == num) {
+                    count++;
+                } else if (arr[i][y] == 0) {
+                    live += 1; //空位标记
+                    i = 100;
+                } else {
+                    death += 1;
+                    i = 100;
+                }
+            }
+            count -= 1;
+            // console.log(x + "," + y + "位置上的左右得分为" + model(count, death));
+            return this.model(count, death);
+        };
+
+        this.topBottom = function (x, y, num) {
+            var death = 0; //0表示两边都没堵住,且可以成5，1表示一边堵住了，可以成5,2表示是死棋，不予考虑
+            var live = 0;
+            var count = 0;
+            var arr = new Array(this.columns - 1);
+            for (var i = 0; i < this.columns - 1; i++) {
+                arr[i] = new Array(this.columns - 1);
+                for (var j = 0; j < this.columns - 1; j++) {
+                    arr[i][j] = this.chessData[i][j];
+                }
+            }
+            arr[x][y] = num;
+            for (var i = y; i >= 0; i--) {
+                if (arr[x][i] == num) {
+                    count++;
+                } else if (arr[x][i] == 0) {
+                    live += 1; //空位标记
+                    i = -1;
+                } else {
+                    death += 1;
+                    i = -1;
+                }
+            }
+            for (var i = y; i <= this.columns - 2; i++) {
+                if (arr[x][i] == num) {
+                    count++;
+                } else if (arr[x][i] == 0) {
+                    live += 1; //空位标记
+                    i = 100;
+                } else {
+                    death += 1;
+                    i = 100;
+                }
+            }
+            count -= 1;
+            // console.log(x + "," + y + "位置上的上下斜得分为" + model(count, death));
+            return this.model(count, death);
+        };
+
+        this.rightBottom = function (x, y, num) {
+            var death = 0; //0表示两边都没堵住,且可以成5，1表示一边堵住了，可以成5,2表示是死棋，不予考虑
+            var live = 0;
+            var count = 0;
+            var arr = new Array(this.columns - 1);
+            for (var i = 0; i < this.columns - 1; i++) {
+                arr[i] = new Array(this.columns - 1);
+                for (var j = 0; j < this.columns - 1; j++) {
+                    arr[i][j] = this.chessData[i][j];
+                }
+            }
+            arr[x][y] = num;
+            for (var i = x, j = y; i >= 0 && j >= 0;) {
+                if (arr[i][j] == num) {
+                    count++;
+                } else if (arr[i][j] == 0) {
+                    live += 1; //空位标记
+                    i = -1;
+                } else {
+                    death += 1;
+                    i = -1;
+                }
+                i--;
+                j--;
+            }
+            for (var i = x, j = y; i <= this.columns - 2 && j <= this.columns - 2;) {
+                if (arr[i][j] == num) {
+                    count++;
+                } else if (arr[i][j] == 0) {
+                    live += 1; //空位标记
+                    i = 100;
+                } else {
+                    death += 1;
+                    i = 100;
+                }
+                i++;
+                j++;
+            }
+            count -= 1;
+            // console.log(x + "," + y + "位置上的右下斜得分为" + model(count, death));
+            return this.model(count, death);
+        };
+
+        this.rightTop = function (x, y, num) {
+            var death = 0; //0表示两边都没堵住,且可以成5，1表示一边堵住了，可以成5,2表示是死棋，不予考虑
+            var live = 0;
+            var count = 0;
+            var arr = new Array(this.columns - 1);
+            for (var i = 0; i < this.columns - 1; i++) {
+                arr[i] = new Array(this.columns - 1);
+                for (var j = 0; j < this.columns - 1; j++) {
+                    arr[i][j] = this.chessData[i][j];
+                }
+            }
+            arr[x][y] = num;
+            for (var i = x, j = y; i >= 0 && j <= this.columns - 2;) {
+                if (arr[i][j] == num) {
+                    count++;
+                } else if (arr[i][j] == 0) {
+                    live += 1; //空位标记
+                    i = -1;
+                } else {
+                    death += 1;
+                    i = -1;
+                }
+                i--;
+                j++;
+            }
+            for (var i = x, j = y; i <= this.columns - 2 && j >= 0;) {
+                if (arr[i][j] == num) {
+                    count++;
+                } else if (arr[i][j] == 0) {
+                    live += 1; //空位标记
+                    i = 100;
+                } else {
+                    death += 1;
+                    i = 100;
+                }
+                i++;
+                j--;
+            }
+            count -= 1;
+            // console.log(x + "," + y + "位置上的右上斜得分为" + model(count, death));
+            return this.model(count, death);
+        };
+        /**
+         * 罗列相等效果的棋型(此处只考虑常见的情况，双成五，双活四等少概率事件不考虑)
+         * 必胜棋：成五=活四==双活三=冲四+活三=双冲四
+         */
+        this.model = function (count, death) {
+            // console.log("count" + count + "death" + death);
+            var LEVEL_ONE = 0;//单子
+            var LEVEL_TWO = 1;//眠2，眠1
+            var LEVEL_THREE = 1500;//眠3，活2
+            var LEVEL_FOER = 4000;//冲4，活3
+            var LEVEL_FIVE = 10000;//活4
+            var LEVEL_SIX = 100000;//成5
+            if (count == 1 && death == 1) {
+                return LEVEL_TWO; //眠1
+            } else if (count == 2) {
+                if (death == 0) {
+                    return LEVEL_THREE; //活2
+                } else if (death == 1) {
+                    return LEVEL_TWO; //眠2
+                } else {
+                    return LEVEL_ONE; //死棋
+                }
+            } else if (count == 3) {
+                if (death == 0) {
+                    return LEVEL_FOER; //活3
+                } else if (death == 1) {
+                    return LEVEL_THREE; //眠3
+                } else {
+                    return LEVEL_ONE; //死棋
+                }
+            } else if (count == 4) {
+                if (death == 0) {
+                    return LEVEL_FIVE; //活4
+                } else if (death == 1) {
+                    return LEVEL_FOER; //冲4
+                } else {
+                    return LEVEL_ONE; //死棋
+                }
+            } else if (count == 5) {
+                return LEVEL_SIX; //成5
+            }
+            return LEVEL_ONE;
+        };
+
+        this.Utils = {
+            contains: function (arr, o) {
+                var _this = this;
+                if (!arr || !o) return false;
+
+                var flag = false;
+                $.each(arr, function () {
+                    if (!this) return true;
+                    if (_this.equals(this, o)) {
+                        flag = true;
+                        return false;
+                    }
+                });
+                return flag;
+            },
+            positionContains: function (arr, o) {
+                if (!arr || !o) return false;
+
+                var flag = false;
+                $.each(arr, function () {
+                    if (!this) return true;
+                    if (this.x == o.x && this.y == o.y) {
+                        flag = true;
+                        return false;
+                    }
+                });
+                return flag;
+            },
+            indexOf: function (arr, o) {
+                var _this = this;
+                if (!arr || !o) return -1;
+
+                var flag = -1;
+                $.each(arr, function (i) {
+                    if (!this) return true;
+                    if (_this.equals(this, o)) {
+                        flag = i;
+                        return false;
+                    }
+                });
+                return flag;
+            },
+            equals: function (o1, o2) {
+                if (o1 == o2) return true;
+                if (!o1 || !o2) return false;
+                return o1.x == o2.x && o1.y == o2.y && o1.color == o2.color;
+            },
+            alert: function (msg) {
+                var dialog = document.createElement("div");
+                dialog.setAttribute('class', 'dialog-bg');
+                var msgBox = document.createElement("div");
+                msgBox.setAttribute('class', 'dialog');
+                msgBox.innerHTML = msg;
+                dialog.appendChild(msgBox);
+                dialog.onclick = function () {
+                    location.reload(true);
+                };
+                document.body.appendChild(dialog);
+            }
+        };
+    }
+
+    $(function () {
+        var game = new Game("canvas");
+        game.init();
+    });
+</script>
+</body>
+</html>

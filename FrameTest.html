@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/jquery/jquery.js"></script>
+    <script>
+        function add(a, b){
+            console.log(a + b);
+        }
+        $(function () {
+            $(document).delegate('iframe', 'mouseover', function () {
+                try {
+                    $(this).contents().unbind('keydown').keydown(function (e) {
+                        if (e.which === 8) {
+                            window.event.keyCode = 0;
+                            window.event.returnvalue = false;
+                            return false;
+                        }
+                    });
+                } catch (e) {
+//                    console.error(e);
+                    debugger
+                    console.log(this.contentWindow.top, this.contentWindow.$body);
+                    this.contentWindow.document.onkeydown = function () {
+                        console.log(window.event.keyCode);
+                        this.contentWindow.top.add.call(this,1,2);
+                        return false;
+                    };
+//                    top.window[data["fn"]].call(document,data);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+main frame
+<iframe id="frame1" src="FrameBTest.html" width="100%" height="250"></iframe>
+
+<iframe id="frame2" src="https://www.baidu.com/" width="100%" height="250"></iframe>
+
+</body>
+</html>

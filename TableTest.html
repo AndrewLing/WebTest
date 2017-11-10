@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8"/>
+    <title>表格组件</title>
+    <style>
+        #container ul {
+            /*padding: 0;*/
+        }
+
+        #container .group-main > li {
+            position: relative;
+            list-style-type: decimal;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            padding: 2px 10px;
+            border-bottom: 1px solid #c6c6c6;
+        }
+        #container .group-main > li p {
+            display: inline-block;
+            font-size: 20pt;
+            position: absolute;
+            top: -54px;
+            left: 208px;
+            font-family: sans-serif;
+            line-height: 2;
+        }
+
+        #container .group-main > li:first-child {
+            border-top: 1px solid #ccc;
+        }
+
+        #container .group-main > li:last-child {
+            border-bottom: 1px solid #ccc;
+        }
+
+        #container .group-main .operator {
+            float: right;
+        }
+        #container .group-main .price-box {
+            position: absolute;
+            top: -11px;
+            left: 226px;
+        }
+    </style>
+    <script type="text/javascript" src="./js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="./js/jquery/plugins/WdatePicker/WdatePicker.js"></script>
+</head>
+<body>
+<div id="container">
+    <form id="form1" action="#">
+        <div id="form-container" name="ppsDetails"></div>
+        <button type="button" id="submit">Submit</button>
+    </form>
+    <input id="d4320" type="text" class="Wdate" name="date-i" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', maxDate:'#F{$dp.$D(\'d4322\',{d:-1});}'})" style="width: 100px" />
+    <input id="d4321" type="text" class="Wdate" name="date-i" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', maxDate:'#F{$dp.$D(\'d4322\',{d:-1});}', minDate:'#F{$dp.$D(\'d4320\',{d:1});}'})" style="width: 100px" />
+    <input id="d4322" type="text" class="Wdate" name="date-i" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd', minDate:'#F{$dp.$D(\'d4320\',{d:1});}'})" style="width: 100px" />
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    var Msg = {
+        sm: {
+            pps: {
+                name: '名称',
+                headers: ['电价规则名称', '创建时间', '修改时间', '创建人', '修改人', '详细信息', '电价规则编号'],
+                delFaild: '已经绑定电站，请解除绑定再删除！',
+                modifyFaild: '已经绑定电站，请解除绑定再修改！',
+                plsSelect: '请选择一条记录！',
+                powerPrice: '电价',
+                settingItems: ['基础配置', '规则明细'],
+                detailHeaders: ['有效起始日期', '分段起始日期', '有效结束日期'],
+                addOp: '添加规则日期分段',
+                delOp: '删除规则日期分段'
+            }
+        }
+    };
+    /**
+     * 时间格式化
+     * @param fmt {String} 格式字符串，如：'%Y-%M-%d %H:%m:%s %S'
+     * （%Y:4位年，%M:2位月，%d:2位日，%H:24小时制时，%m:2位分，%s:2位秒，%S:3位毫秒）
+     * @return {String} 指定日期格式字符串（如：2014-12-12 22:22:22:234）
+     */
+    Date.prototype.format = function (fmt) {
+        var date = this;
+        var dateData = {
+            year: date.getFullYear(),
+            month: (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1),
+            day: date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
+            hours: date.getHours() < 10 ? "0" + date.getHours() : date.getHours(),
+            minutes: date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes(),
+            seconds: date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds(),
+            mSeconds: date.getMilliseconds()
+        };
+        return fmt.replace('%Y', dateData.year)
+                .replace('%M', dateData.month)
+                .replace('%d', dateData.day)
+                .replace('%H', dateData.hours)
+                .replace('%m', dateData.minutes)
+                .replace('%s', dateData.seconds)
+                .replace('%S', dateData.mSeconds);
+    };
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    };
+
+    $(function () {
+
+        initPowerPriceGroup($('#form-container'));
+
+        function initPowerPriceGroup(dom) {
+
+            /**
+             *
+             * @param y 上一个日期控件ID
+             * @param t 下一个日期控件ID
+             * @param f 是否初始化
+             * @returns {string}
+             */
+            var datePicker = function (y, t, f) {
+                var d = "WdatePicker(", e = ")";
+                var p = {
+                    dateFmt: 'yyyy-MM-dd'
+                };
+                y && (p.minDate = '#F{$dp.$D(\\\'' + y + '\\\', {d:1})}');
+                t && (p.maxDate = '#F{$dp.$D(\\\'' + t + '\\\', {d:-1})}');
+                if (f) {
+                    y && (p.minDate = '#F{$dp.$D(\\\'' + y + '\\\')}');
+                    t && (p.maxDate = '#F{$dp.$D(\\\'' + t + '\\\')}');
+                }
+                return (d + JSON.stringify(p) + e).replace(/\\\\/g, '\\').replace(/[\'\"]/g, '\'');
+            };
+
+            var index = 1;
+            var main = $('<ul>').addClass('group-main').delegate('button', 'click', function (e) {
+                var start = $(this).parents('li').prev().find('[name^=date-]');
+                var end = $(this).parents('li').next().find('[name^=date-]');
+                var cur = $(this).parents('li').find('[name^=date-]');
+                if (this.className == 'add') {
+                    var d = getDayWithDiff(cur.val(), 1);
+                    if (d >= end.val()) {
+                        alert('指定日期段无法再拆分');
+                        return;
+                    }
+                    var $item = $('<li></li>').css({padding: '2px 10px'});
+                    $item.append(Msg.sm.pps.detailHeaders[1] +
+                    '<input type="text" id="d' + index + '" class="Wdate valinput" data-ref="' + (dom.attr('name') || '') +
+                    '" name="date-i" style="width: 100px" />');
+                    $item.append('<span class="price-box">' + Msg.sm.pps.powerPrice +
+                    '<input type="text" id="p' + (index++) + '" data-ref="' + (dom.attr('name') || '') + '" name="price-i"' +
+                    ' class="valinput" style="width: 50px" /></span>');
+                    $item.append('<p>}</p>');
+                    $item.append('<span class="operator">' +
+                    '<button type="button" class="del" title="' + Msg.sm.pps.delOp + '">×</button>' +
+                    '<button type="button" class="add" title="' + Msg.sm.pps.addOp + '">+</button>' +
+                    '</span>');
+                    $(this).parents('li').after($item);
+
+                    $('[name=price-i]', $item).val(0);
+                    $('[name=date-i]', $item).val(d).bind('focus', function () {
+                        var dp = datePicker(cur.get(0) && cur.get(0).id, end.get(0) && end.get(0).id, false);
+                        eval(dp);
+                    });
+                    cur.unbind('focus').bind('focus', function () {
+                        var next = $(this).parents('li').next().find('[name^=date-]');
+                        var dp = datePicker(start.get(0) && start.get(0).id, next.get(0).id, false);
+                        eval(dp);
+                    });
+                    end.unbind('focus').bind('focus', function () {
+                        var prev = $(this).parents('li').prev().find('[name^=date-]');
+                        var next = $(this).parents('li').next().find('[name^=date-]');
+                        var dp = datePicker(prev.get(0) && prev.get(0).id, next.get(0) && next.get(0).id, false);
+                        eval(dp);
+                    });
+                }
+                /*
+                 * 删除日期分段
+                 */
+                else if (this.className == 'del') {
+                    // TODO 询问是否删除，删除无法找回
+                    if (confirm('是否删除? 删除无法找回')) {
+                        $(this).parents('li').remove();
+                        start.unbind('focus').bind('focus', function () {
+                            var prev = $(this).parents('li').prev().find('[name^=date-]');
+                            var dp = datePicker(prev.get(0) && prev.get(0).id, end.get(0) && end.get(0).id, false);
+                            eval(dp);
+                        });
+                        end.unbind('focus').bind('focus', function () {
+                            var next = $(this).parents('li').next().find('[name^=date-]');
+                            var dp = datePicker(start.get(0) && start.get(0).id, next.get(0) && next.get(0).id, false);
+                            eval(dp);
+                        });
+                    }
+                }
+            });
+            var item_start = $('<li>').css({padding: '2px 10px'}).append(Msg.sm.pps.detailHeaders[0])
+                    .append('<input id="d0" type="text" class="Wdate valinput" data-ref="' + (dom.attr('name') || '') +
+                    '" name="date-start" style="width: 100px"/>')
+                    .append('<span class="operator">' +
+                    '<button type="button" class="add" title="' + Msg.sm.pps.addOp + '">+</button>' +
+                    '</span>');
+            var item_end = $('<li>').css({padding: '2px 10px'}).append(Msg.sm.pps.detailHeaders[2])
+                    .append('<input id="de" type="text" class="Wdate valinput" data-ref="' + (dom.attr('name') || '') +
+                    '" name="date-end" style="width: 100px"/>')
+                    .append('<p>}</p>')
+                    .append('<span class="price-box">' + Msg.sm.pps.powerPrice +
+                    '<input type="text" id="pt" name="price-t" class="valinput" style="width: 50px"/></span>');
+            main.append(item_start).append(item_end);
+
+            $(dom).append(main);
+
+            $('[name=price-t]', main).val(0);
+            $('[name=date-start]', main).val(getDayWithDiff());
+            $('[name=date-end]', main).val(getDayWithDiff());
+            $('[name=date-start]', main).bind('focus', function () {
+                eval(datePicker(null, 'de', true));
+            });
+            $('[name=date-end]', main).bind('focus', function () {
+                eval(datePicker('d0', null, true));
+            });
+        }
+
+        /**
+         * 获取指定日期的相应偏移量后的日期（格式：yyyy-MM-dd）
+         * @param d
+         * @param diff
+         * @returns {String|*}
+         */
+        function getDayWithDiff (d, diff) {
+            var now = new Date();
+            if (d) {
+                now = new Date(d);
+            }
+            if (!isNaN(diff)) {
+                now.setDate(now.getDate() + diff);
+            }
+            return now.format('yyyy-MM-dd');
+        }
+
+        $('#submit').click(function () {
+            var data = $('#form1').serializeArray();
+            console.log(data);
+        });
+
+    });
+</script>

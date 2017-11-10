@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="./js/jquery/jquery.js"></script>
+    <style>
+        button {
+            background: #038BDF;
+            padding: 2px 5px;
+            border: 0px solid #cccccc;
+            border-radius: 5px;
+            box-shadow: 1px 1px 5px #000;
+        }
+        button[disabled] {
+            box-shadow: 0 0 2px #000;
+        }
+        button:active {
+            background: #3B72CD;
+            box-shadow: inset 1px 1px 5px #000;
+        }
+
+        ul#list-box {
+            width: 500px;
+            height: 200px;
+            overflow: auto;
+            border: 1px solid #ccc;
+        }
+        li {
+            list-style-type: circle;
+            height: 30px;
+            padding: 2px 15px;
+            line-height: 30px;
+            border-bottom: 1px dashed #FFFFFF;
+            background: #0099FF;
+        }
+        li:hover {
+            background: #FFFFFF;
+        }
+
+        .box-container {
+            border: 1px solid red;
+        }
+
+        .box-item1 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #c6c6c6;
+            background: #c5d9e8;
+            margin: 30px;
+        }
+        .box-item2 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #c6c6c6;
+            background: #c5d9e8;
+            margin: 30px;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var btn1 = document.getElementById('btn1');
+            btn1.onclick = function () {
+                window.close();
+                window.location.reload();
+            };
+        };
+
+        $(function () {
+//            $('#list-box').bind('keydown', function (e) {
+//                console.log(e.keyCode, e.keyCode == 38, e.keyCode == 40);
+//            });
+        });
+    </script>
+</head>
+<body style="background: #888;">
+<button id="btn1" type="button" disabled>button</button>
+<ul id="list-box">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+    <li>10</li>
+    <li>11</li>
+    <li>12</li>
+    <li>13</li>
+    <li>14</li>
+    <li>15</li>
+    <li>16</li>
+    <li>17</li>
+    <li>18</li>
+    <li>19</li>
+    <li>20</li>
+</ul>
+<div class="box-container">
+    <div class="box-item1"></div>
+    <div class="box-item2"></div>
+</div>
+</body>
+</html>

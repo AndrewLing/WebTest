@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/module/topo/topo.css"/>
+</head>
+<body >
+<div class="ui-layout-north north-bottomed">
+    <!--top-->
+    <div class="index-top" id="index-top">
+        <table cellspacing="0" cellpadding="0" width="100%">
+            <tr class="topleft">
+                <td width="340" id="menuTitle"><a href="#" id="logoid" title=""><img id="logoTitle" src="/images/logo.png"
+                                                                      border="0"
+                                                                      alt=""/></a></td>
+                <td align="left">
+                    <div class="index-top-c"><span class="text">Msg.ztpz.charactersText</span></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="west" class="ui-layout-west">
+    <div class="ui-layout-north">
+        <!--站点地图-->
+        <div class="ztpz-zddt" id="ztpz-zddt">
+            <div class="ztpz-zddt-top">
+                <div class="ztpz-zddt-top-box">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text">Msg.ztpz.siteMap</span>
+                </div>
+            </div>
+            <div class="ztpz-zddt-body" id="ztpz-zddt-body">
+                <div id="treeCtrl" class="zddt-body-gj">
+                    <div id="ztAddNode" class="body-gj1"><a href="#" class="i18n-title" title="Msg.ztpz.buildNewNormalNode"><img src="/images/ztpz/add.png" border="0"/></a>
+                    </div>
+                    <!--<div id="ztAddFolder" class="zt-btn-auth body-gj"><a class="i18n-title" href="#" title="Msg.ztpz.buildNewStationNode"><img src="/images/ztpz/add1.png"
+                                                                                                                                               border="0"/></a></div>-->
+                    <div id="ztUpdateNode" class="body-gj"><a class="i18n-title" href="#" title="Msg.ztpz.renameNode"><img src="/images/ztpz/renameNode.png" border="0"/></a>
+                    </div>
+                    <div id="ztRemoveNode" class="body-gj"><a class="i18n-title" href="#" title="Msg.ztpz.removeNode"><img src="/images/ztpz/delete.png"
+                                                                                                                                       border="0"/></a></div>
+                </div>
+                <br/>
+            </div>
+        </div>
+        <!--end 站点地图-->
+    </div>
+    <div class="ui-layout-center">
+        <div class="zddt-body-tree">
+            <ul id="topoTree" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="ui-layout-south" id="ztpzztbjDiv">
+        <div class="ui-layout-north">
+            <!--组态部件-->
+            <div class="ztpz-ztbj" id="ztpz-ztbj">
+                <div class="ztpz-zddt-top1">
+                    <div class="ztpz-zddt-top-box">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="text">Msg.ztpz.ztComponent</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="ui-layout-center">
+            <div class="ztpz-zddt-bj_body" id="ztpz-zddt-bj_body"></div>
+        </div>
+        <!--组态部件-->
+    </div>
+</div>
+<div class="ui-layout-center ztpz-content" id="topoArea" >
+    <div class="ztpz-htq-box1" id="toolbardiv">
+        <div class="htq-box-button">
+            <div class="htq-box-button-box">
+                <div class="htq-bt-save i18n-title" title="Msg.ztpz.save" id="saveToolButton">
+                    <input type="button" class="htq-save i18n-title" title="Msg.ztpz.save" />
+                </div>
+                <div class="htq-bt-default i18n-title" title="Msg.ztpz.quesheng" id="defaultToolButton">
+                    <input type="button" class="htq-default i18n-title" title="Msg.ztpz.quesheng"  />
+                </div>
+                <div class="htq-bt-edit i18n-title" title="Msg.ztpz.edit" id="editToolButton">
+                    <input type="button" class="htq-edit i18n-title" title="Msg.ztpz.edit"  />
+                </div>
+                <div class="htq-bt-clean" title="Msg.ztpz.clean" id="cleanToolButton">
+                    <input type="button" class="htq-clean i18n-title" title="Msg.ztpz.clean" />
+                </div>
+                <div class="htq-bt-zoomin i18n-title" title="Msg.ztpz.zoomOut" id="magnifyToolButton">
+                    <input type="button" class="htq-zoomin i18n-title" title="Msg.ztpz.zoomOut" />
+                </div>
+                <div class="htq-bt-zoomout i18n-title" title="Msg.ztpz.zoomIn" id="lessonToolButton">
+                    <input type="button" class="htq-zoomout i18n-title" title="Msg.ztpz.zoomIn"  />
+                </div>
+                <div class="htq-bt-up i18n-title" title="Msg.ztpz.alignTop" id="topalignToolButton">
+                    <input type="button" class="htq-up i18n-title" title="Msg.ztpz.alignTop" />
+                </div>
+                <div class="htq-bt-down i18n-title" title="Msg.ztpz.alignBottom" id="bottomalignToolButton">
+                    <input type="button" class="htq-down i18n-title" title="Msg.ztpz.alignBottom" />
+                </div>
+                <div class="htq-bt-left i18n-title" title="Msg.ztpz.alignLeft" id="leftalignToolButton">
+                    <input type="button" class="htq-left i18n-title" title="Msg.ztpz.alignLeft"  />
+                </div>
+                <div class="htq-bt-right i18n-title" title="Msg.ztpz.alignRight" id="rightalignToolButton">
+                    <input type="button" class="htq-right  i18n-title" title="Msg.ztpz.alignRight"  />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="east" class="ui-layout-east">
+    <div class="ui-layout-center">
+        <!-- 属性 -->
+        <div class="ui-layout-north">
+            <div class="ztpz-zddt-top">
+                <div class="ztpz-zddt-top-box">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text">Msg.ztpz.attr</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui-layout-center">
+            <div class="ztpz-zddt-body" id="proArea"></div>
+        </div>
+        <!--end 属性-->
+    </div>
+    <div id="sunshine" class="ui-layout-south">
+        <!-- 阳光化 -->
+        <div class="ui-layout-north ztpz-zddt-top1" style="border-top: 1px solid #164c9f; overflow-x: hidden;">
+            <div class="ztpz-zddt-top-box">
+                <ul>
+                    <li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="text">Msg.ztpz.sunShine</span></span></li>
+                    <!--<li><button class="ztpz-button-sxx i18n-title" href="#" title="Msg.ztpz.refresh" id="refreshToolButton"/></li>-->
+                    <li><div class="reload-box"><input type="button" class="htq-reload i18n-title" title="Msg.ztpz.refresh" id="refreshToolButton"/></div></li>
+                </ul>
+                <table>
+                    <tr>
+                        <th style="width:30%;text-align:center"><span class="text">Msg.ztpz.devType</span></th>
+                        <th style="width:25%;text-align:center"><span class="text">Msg.ztpz.ESN</span></th>
+                        <th style="width:25%;text-align:center"><span class="text">Msg.ztpz.address</span></th>
+                        <th style="width:20%;text-align:center"><span class="text">Msg.ztpz.secondAddress</span></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="ui-layout-center" id="sunshineAreaTab" style="height: 375px;">
+            <table id="sunArea" style="text-align:center"></table>
+        </div>
+        <!-- 阳光化 -->
+    </div>
+</div>
+
+<div id="dlgChoDev" class="i18n-text ztpz-dlg" title="Msg.ztpz.newAndRelatedDev" hidden="true">
+    <!--<label>请选择关联设备：</label></br>-->
+    <table style="width:98%;margin-top:0px;" >
+        <tr style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.busCode</span></td>
+            <td style="width:70%;text-align:left"><input id="bussinessCode" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.name</span></td>
+            <td style="width:70%;text-align:left"><input id="name" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.ip</span></td>
+            <td style="width:70%;;text-align:left"><input id="ip" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr id="esntr" style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.ESN</span></td>
+            <td style="width:70%;;text-align:left"><input id="ESN" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.KKScode</span></td>
+            <td style="width:70%;;text-align:left"><input id="kksCode" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr id="secondaddresstr" style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.secondAddress</span></td>
+            <td style="width:70%;text-align:left"><input id="secondaddress" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr id="highvswitchtr" style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.topocfg.gaoyafuhekaiguan</span></td>
+            <td style="width:70%;text-align:left"><input id="highvswitch" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr id="lowvcircuitbreaker1tr" style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.topocfg.diyaduanluqione</span></td>
+            <td style="width:70%;text-align:left"><input id="lowvcircuitbreaker1" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr id="lowvcircuitbreaker2tr" style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.topocfg.diyaduanluqitwo</span></td>
+            <td style="width:70%;text-align:left"><input id="lowvcircuitbreaker2" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.deviceProt</span></td>
+            <td style="width:70%;text-align:left"><input id="devicePort" class="input-dialog" style="height:20px;width:96%;"/></td>
+        </tr>
+        <tr style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.ztpz.devVer</span></td>
+            <td style="width:70%;text-align:left"><select id="modelVersionID" onchange="changeModelVersion()" class="input-dialog" style="height:23px;width:97%;"/></select></td>
+        </tr>
+         <tr id="ascurinvstr_111" style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.topocfg.associatexiangbian</span></td>
+            <td style="width:70%;text-align:left"><select id="ascurinvstr_222" class="input-dialog" style="height:23px;width:97%;"/></select></td>
+        </tr>
+        <tr id="ascurinvstr" style="height:32px;">
+            <td style="width:30%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.topocfg.associateinventer</span></td>
+            <td style="width:70%;text-align:left"><select id="ascurinvs" class="input-dialog" style="height:23px;width:97%;"/></select></td>
+        </tr>
+    </table>
+</div>
+
+<div id="dlgChoDevSig" class="i18n-title ztpz-dlg" title="Msg.ztpz.relatedDevSingal" hidden="true">
+    <label><span class="text">Msg.ztpz.pleseSelectRelatedSingal</span>：</label>
+    <div id="selectedSignal">
+    </div>
+</div>
+
+<div id="dlgChoAssNode" class="i18n-title ztpz-dlg" title="Msg.ztpz.relatedPel"  hidden="true">
+    <input id="dlgChoAssNodeinput" style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />
+	<div id="xialaliebiao" style="margin: -20px 0px 0px 0px;">
+		    <div style="margin: 0px 0px 10px 0px;">
+			    <label ><span class="text">Msg.topocfg.plechaosefenqu</span></label>
+			    <select id="choFenQu" style="width:210px;height:23px;background-color:#001F41;color:#d8d8d8;border:1px solid #247ED3;">
+			    	<!-- <option value = "0" slected class='text'>全部分区</option> -->
+			    </select>
+		    </div>
+		    <div style="margin: 0px 0px 20px 0px;">
+			    <label ><span class="text">Msg.topocfg.plechaosezizhen</span></label>
+			    <select id="choZiZhen" style="width:210px;height:23px;background-color:#001F41;color:#d8d8d8;border:1px solid #247ED3;">
+			    	<!-- <option value = "0" slected class='text'>全部子阵</option> -->
+			    </select>
+		    </div>
+		     
+    </div>
+    <div id="comcMod" style="margin: -20px 0px 0px 0px;">
+     	<div style="margin: 0px 0px 20px 0px;">
+			    <label ><span class="text">Msg.topocfg.plechaosestation</span></label>
+			    <select id="plechaosestation" style="width:210px;height:23px;background-color:#001F41;color:#d8d8d8;border:1px solid #247ED3;">
+			    </select>
+		    </div>
+    </div>
+    <div style="margin: -10px 0px 10px 0px;">
+	    <label id = "choDevName"><span class="text">Msg.ztpz.pleaseSelectDev</span></label>
+	    <label id = "choVerName"><span class="text">Msg.ztpz.pleaseSelectVer</span></label>
+	    <select id="selectedNode" style="width:210px;height:23px;background-color:#001F41;color:#d8d8d8;border:1px solid #247ED3;">
+	    </select>
+	</div>
+    <div id="selectedSignal1" style="text-align:left;margin-left:20px;margin-top:5px;">
+    </div>
+</div>
+
+<div id="dlgChoTopoGraph" class="i18n-title ztpz-dlg" title="Msg.ztpz.relatedTopo"  hidden="true">
+    <input style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />
+    <span class="text" style="width:100px">Msg.ztpz.pleaseSelectTopo</span>
+    <select id="selectedTopoGraph" style="width:200px;height:23px" class="input-dialog">
+    </select>
+</div>
+
+<!-- <div id="dlgChoInvs" class="i18n-title" title="Msg.ztpz.relatedInvs"  hidden="true"> -->
+<!--     <span class="text" style="width:100px">Msg.ztpz.pleaseSelectInvs</span> -->
+<!--     <select id="selectedInvsId" style="width:200px;height:23px" class="input-dialog"> -->
+<!--     </select> -->
+<!-- </div> -->
+
+<div id="dlgChoDevVer" class="i18n-title ztpz-dlg" title="Msg.ztpz.relatedDevVer"  hidden="true">
+    <input id="dlgChoDevVerinput" style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />
+    <span class="text">Msg.ztpz.pleaseSelectVer</span>
+    <select id="selectedDevVer" style="width:210px;height:23px" class="input-dialog">
+    </select>
+</div>
+
+<div id="alertdlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.message"  hidden="true" style=" height:auto;vertical-align:middle;">
+    <div id="alertmsg" style="color:#00DE15;font-size: 18px;"></div>
+    <input id="alertinput" style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />
+</div>
+
+
+<div id="comfirmsavetoppdatadlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.message"   hidden="true">
+    <div>
+        <span class="text" style="color:#00DE15;font-size: 18px;">Msg.ztpz.whetherSaveTopo</span>
+        <input id="comfirmsavetoppdatadlginput" style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />
+    </div>
+</div>
+
+<div id="isContinueSaveTopoDatadlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.message"   hidden="true">
+    <div>
+        <span class="text" style="color:#00DE15;font-size: 18px;">Msg.topocfg.mutiuseredittip</span>
+        <input id="isContinueSaveTopoDatadlgInput" style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />
+    </div>
+</div>
+
+<div id="leavecomfirmsavetoppdatadlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.message"   hidden="true">
+    <div><span class="text" style="color:#00DE15;font-size: 18px;">Msg.ztpz.whetherSaveTopo</span></div>
+</div>
+
+<div id="changepicdlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.changePic"  hidden="true">
+    <table style="width:98%">
+        <tr >
+            <td width="72" height="40" align="right" valign="middle"><span class="text ">Msg.ztpz.selectPic</span></td>
+            <td align="left"><select id="picPathSel" style="width:380px;height:28px;background-color:#001F41;color:#d8d8d8;border:1px solid #247ED3;"></select></td>
+        </tr>
+        <tr>
+            <td align="right" valign="middle" height="40"><span class="text">Msg.ztpz.uploadPic</span></td>
+            <td align="left" valign="middle">
+                <div class="fild-box">
+                    <div class="file-box-left"><input type="text" readonly="readonly" name="input_text" id="input_text" class="input-time i18n-title"  title="Msg.topocfg.uploadfiletip" /></div>
+                    <div class="file-box-right">
+                        <form id="picForm" action="/cm/userNodePic/uploadPic" target="picIframe" method="post" enctype="multipart/form-data" class="file-form">
+                            <input type="button" value="Msg.ztpz.scan"  class="fourfont-buttonbg textValue i18n-title" style="margin-top:0px;" title="Msg.topocfg.uploadfiletip" />&nbsp;
+                            <input type="file" name="picUpLoadFile" class="file i18n-title" id="picUpLoadFile" title="Msg.topocfg.uploadfiletip" size="28" onchange="topo.Util.getUpLoadFileName();" />
+                            <input type="button" value="Msg.ztpz.daoru" id="picUpLoadBtn" name="picUpLoadBtn" style="margin-top:0px;" class="fourfont-buttonbg textValue" />
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td height="140" valign="middle" align="right"><span class="text">Msg.ztpz.scan</span></td>
+            <td valign="middle" align="left"><img id="picSrc" src="" border="0" style="width:128px;height:128px;"></td>
+        </tr>
+    </table>
+</div>
+
+<div id="choosedevdlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.relatedDev" hidden="true">
+	<table style="width:98%;margin-top:0px;" >
+		<tr style="height:32px;">
+		    <td style="width:40%;text-align:right;">
+		    	<input type="text" style="width: 0px; height: 0px; border:none;" id="data2">
+		    	<label><span style="margin-right:5px;" class="text">Msg.ztpz.pleaseSelectDev</span></label>
+		    </td>
+		    <td style="width:60%;text-align:left"><select id="choosedev" style="height:23px;width:97%;" class="input-dialog"> </select></td>
+		</tr>
+		<tr id="associateinventerId" style="height:32px;" hidden="true">
+			<td style="width:40%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.topocfg.associateinventer</span></td>
+			<td style="width:60%;text-align:left"><select id="ascurinvs_associate" class="input-dialog" style="height:23px;width:97%;"/></select></td>
+		</tr>
+		<tr id="associatejzinventerId" style="height:32px;" hidden="true">
+			<td style="width:40%;text-align:right;"><span style="margin-right:5px;" class="text">Msg.topocfg.associatexiangbian</span></td>
+			<td style="width:60%;text-align:left"><select id="ascurinvs_associate1" class="input-dialog" style="height:23px;width:97%;"/></select></td>
+		</tr>
+	</table>
+</div>
+
+<div id="otherEMIdevdlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.relatedDev"  hidden="true">
+    <input type="text" style="width: 0px; height: 0px; border:none;" id="data1">
+    <label><span class="text">Msg.ztpz.pleaseSelectDev</span></label>
+    <select id="otherEMIdev" style="width:60%;height:25px;" class="input-dialog"> </select>
+</div>
+
+<div id="confirmcleantopodatadlg" class="i18n-title ztpz-dlg" title="Msg.ztpz.message"  hidden="true">
+    <label><span class="text" style="color:#00DE15;font-size: 18px;">Msg.ztpz.whetherCleanTopo</span></label>
+</div>
+
+
+<div id="dlgChoCalcSignal" class="i18n-title ztpz-dlg" title="Msg.ztpz.chooseCalcSignal" hidden>
+    <input style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />
+    <div>
+        <label><span class="text">Msg.ztpz.chooseSignal</span></label>
+        <select id="calcSigSelect" style="width:210px;height:23px" class="input-dialog"></select>
+    </div>
+    <div id="calcSigBelongDiv" style="margin-top: 20px;">
+        <label><span class="text">Msg.ztpz.chooseSignalObject</span></label>
+        <select id="calcSigBelongSelect" style="width:210px;height:23px" class="input-dialog"></select>
+    </div>
+</div>
+
+<!--遮罩层-->
+<div id="overlay"></div>
+<!--end 遮罩层-->
+<!-- <div id="delLoading" class="ball-clip-rotate"  hidden="true">
+     <div></div>
+</div> -->
+        
+<div id="delLoading" hidden="true">
+  <div id="delLoadingrond">
+    <div id="delLoadingt"></div>
+  </div>
+</div>        
+        
+<div id="relateDevInfo" class="i18n-title ztpz-dlg" title="Msg.ztpz.relateDevInfo"  hidden="true">
+   <!-- <input style="color:#00DE15;font-size: 1px;width:0px;height:0px;border:none;" />-->
+    <label id="choosedevfromdblabel"><span class="text">Msg.ztpz.pleaseSelectDev</span></label>
+    <select id="choosedevfromdb" style="width:210px;height:23px;background-color:#001F41;color:#d8d8d8;border:1px solid #247ED3;">
+    </select>
+    <div id="selectedDevInfo" style="text-align:left;margin-left:20px;margin-top:-3px;">
+    </div>
+</div>
+<!--浮动隐藏按钮-->
+<div class="yincang1" onclick="changeclass()" id="yincang"></div>
+<!--end 浮动隐藏按钮-->
+
+<input type="hidden" id="topoGraphId"/>
+<script src="/js/jquery/1.11.1/jquery-1.11.1.min.js"></script>
+<script src="/js/jquery-ui/1.11.1/jquery-ui.min.js"></script>
+<script src="/js/jquery/plugins/validate/validate.js"></script>
+<script src="/js/plugin/jquery.layout-latest.js"></script>
+<script src="/js/third-party/jquery.ztree.all-3.5.min.js"></script>
+<script src="/js/jquery/Cookies.js"></script>
+<script src="/language/zh.js"></script>
+<script src="/js/globle/globle.js"></script>
+<script src="/js/mac/core.js"></script>
+<script src="/js/plugin/colpick/js/colpick.js"></script>
+<script src="/js/echart/echarts-plain.js"></script>
+<script src="/js/module/topo/lib/twaver.js"></script>
+<script src="/js/module/topo/lib/license.js"></script>
+<script src="/js/module/topo/lib/twaver_ext.js"></script>
+<script src="/js/module/topo/lib/demo.js"></script>
+<script src="/js/module/topo/common/topoUtil1.js"></script>
+<script src="/js/module/topo/common/topoCommon.js"></script>
+<script src="/js/module/topo/common/topoConfiguration1.js"></script>
+<script src="/js/globle/menu.js"></script>
+<script src="/js/other/topleft.js"></script>
+<script src="/js/jquery/ui.js"></script>
+<script src="/js/jquery-ui/dialog.js"></script>
+<script src="/module/rw/js/check.js"></script>
+<script src="/js/util/jquery.validator.omc.ext.js"></script>
+<script src="/js/ui_common.js"></script>
+<script src="/module/topo/js/ztpz.js"></script>
+<iframe id="picIframe" name="picIframe" width="0px" height="0px"></iframe>
+</body>
+
+</html>

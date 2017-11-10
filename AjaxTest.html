@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>AJAX Test</title>
+    <script type="text/javascript" src="js/jquery/jquery.js"></script>
+</head>
+<body>
+<div class="description"></div>
+<button class="btn">Send</button>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        function sendAjax (url, fn) {
+            $.ajax({
+                headers: {
+                    lang: 'en'
+                },
+                url: url,
+                success: fn || function () {
+                    console.log('未处理');
+                },
+                statusCode: {
+                    302: function (data, arg1, arg2) {
+                        console.log(data, arg1, arg2);
+                    }
+                }
+            });
+        }
+
+        $('.btn').click(function () {
+            sendAjax('http://10.10.12.50/groupParameter/getByIds', function (data) {
+                $('.description').text(data);
+            });
+        });
+    });
+</script>

@@ -1,0 +1,628 @@
+.ui-tabs .ui-tabs-nav li {
+list-style: none;
+float: left;
+position: relative;
+top: 0;
+margin: 0px .2em 0 0;
+border-bottom-width: 0;
+padding: 0;
+white-space: nowrap;
+}
+
+a#ui-id-1.ui-tabs-anchor{
+	width:20px;
+	height:10px;
+}
+
+
+a#ui-id-2.ui-tabs-anchor{
+	width:20px;
+	height:10px;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+font-weight: bold;
+color: #fff;
+/*border: 0px solid #FF0000;
+background�� none;
+*/}
+
+.ui-accordion .ui-accordion-header {
+display: block;
+cursor: pointer;
+position: relative;
+margin: 2px 0 0 0;
+padding: .5em .5em .5em .7em;
+min-height: 0;
+font-size: 100%;
+height: 20px;
+}
+
+.ui-widget {
+font-family: Segoe UI, Arial, sans-serif; 
+ font-size: 12pt;
+}
+
+/*.ui-widget-content {
+ border: 1px solid #666; 
+background: #000 url("images/ui-bg_inset-soft_25_000000_1x100.png") 50% bottom repeat-x;
+color: #fff;
+}*/
+
+#ztpz-conf-tabs {
+width:100%;
+height:100%;
+margin: 0px;
+padding: 0px;
+}
+
+
+#pic-accordion div{
+	height:20%;
+}
+
+.ui-accordion .ui-accordion-content {
+padding: 1em 1em 1em 1em;
+border-top: 0;
+overflow: auto;
+}
+
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+float: none;
+padding: .5em 1em;
+text-decoration: none;
+}
+
+/*.ui-widget-content {
+border:none;
+color: #FFFFFF;
+}
+
+*/.ui-widget-header {
+border: 1px solid #333;
+background: #555555 url("/images/ui-bg_gloss-wave_25_333333_500x100.png") 50% 50% repeat-x;
+color: #fff;
+font-weight: bold;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+padding: .1em 1em;
+position: relative;
+}
+
+.ui-button .ui-button-text {
+display: block;
+line-height: normal;
+height: 20px;
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+color: #c0c0c0;
+font-family: '微软雅黑', '宋体';
+font-size: 14px;
+text-decoration: none; 
+}
+
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
+color: #c0c0c0;
+font-family: '微软雅黑', '宋体';
+background: url('/images/zhixing-bt.png') 0 0 no-repeat;
+font-size: 14px;
+text-decoration: none; 
+}
+
+.ui-widget-overlay {
+	/* background: #5c5c5c url("/images/ui-bg_flat_50_5c5c5c_40x100.png") 50% 50% repeat-x;
+	opacity: .1; */
+	/* 遮罩层样式统一*/
+	background: #01050c;
+	opacity: .8;
+	filter: Alpha(Opacity=80);
+}
+.ztpz-zddt-body1{
+
+}
+
+
+/* 2014-11-10图片上传  */
+.fild-box{
+    position: relative;
+    width: 100%;
+    line-height: 30px;
+    height: 30px;
+}
+
+.txt{
+    height:30px;
+    border:0;
+    width: 283px;
+    background: url('/module/topo/images/toponodeicon/input-time3.png') 0 2px no-repeat;
+    color: #d8d8d8;
+    line-height: 30px;
+    float:left;
+}
+
+.txt:hover{
+    background: url('/module/topo/images/toponodeicon/input-time4.png') 0 2px no-repeat;
+}
+
+.txt:focus{
+    background: url('/module/topo/images/toponodeicon/input-time5.png') 0 2px no-repeat;
+}
+
+.btn{
+    font-size: 14px;
+    color: #9f9f9f;
+    background: url('/module/topo/images/toponodeicon/fourfont-buttonbg.png') 0 0 no-repeat;
+    border: none;
+    width: 81px;
+    height: 29px;
+    overflow: hidden;
+    line-height: 29px;
+    cursor: pointer;
+    text-align: center;
+    float:left;
+    margin:0;
+    padding:0;
+}
+
+.file{
+    position: absolute;
+	cursor: pointer;
+	width: 100px;
+	overflow: hidden;
+	top: 0;
+	left: 168px;
+	height: 35px;
+	filter: alpha(opacity:0);
+	opacity: 0;
+	background-color: #FF0000;
+}
+
+.file-box-left{
+    float:left;
+    margin:0;
+    padding:0;
+    width:158px;
+}
+
+.file-box-right{
+    height:30px;
+    margin:0 0 0 10px;
+    float:left;
+    padding:0;
+}
+
+.file-form{
+    height:30px;
+    margin:0;
+    padding:0;
+    border:none;
+}
+
+#alertmsg {
+	text-align:center;
+	margin-top:10px;
+	font-family: '微软雅黑', '宋体';
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	padding: .8em 1em;
+	position: relative;
+	background: url('/images/table-top-center.png') 0 0 repeat-x;
+	margin: -10px -4px 0 -3px;
+	border: none;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+	margin: .5em .4em .5em 0;
+	cursor: pointer;
+	width:99px;
+	height:39px;
+	color:#a3dbfc;
+	background: url('/images/zhixing-bt.png') 0 0 no-repeat;
+	font-family: '微软雅黑', '宋体';
+}
+
+.ui-dialog-buttonset button:hover{
+	background: url('/images/zhixing-bt1.png') 0 0 no-repeat;
+}
+
+.ui-dialog-buttonset button:active{
+	background: url('/images/zhixing-bt2.png') 0 0 no-repeat;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+text-align: center;
+border-width: 0 0 0 0;
+background-image: none;
+margin-top: 0em;
+padding: 0em 3em 0em 3em;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+float: none;
+margin: 0px 1px 0px 1px;
+}
+
+
+.input-dialog {
+	border:1px solid #247ED3;
+	background-color:#001F41;
+	color:#d8d8d8;
+}
+
+/* 输入框样式 */
+.input-style1, .input-time, .input-text-long {
+    color: #4aa3dc;
+    font-size: 14px;
+    width: 136px;
+    height: 30px;
+    border: none;
+    padding: 0 0 0 5px;;
+    margin: 0;
+    background: url('/images/input-text.png') 0 bottom no-repeat;
+}
+
+.input-style1:hover {
+    background: url('/images/input-text1.png') 0 bottom no-repeat;
+}
+
+.input-style1:active {
+    background: url('/images/input-text2.png') 0 bottom no-repeat;
+}
+
+.input-time, .input-text-long {
+	box-sizing: border-box;
+    width: 153px;
+    background: url('/images/input-time.png') 0 bottom no-repeat;
+}
+
+.input-text-long {
+    width: 283px;
+    background: url('/images/input-time3.png') 0 bottom no-repeat;
+}
+
+.input-text-long:hover {
+    background: url('/images/input-time4.png') 0 bottom no-repeat;
+}
+
+.input-text-long:active {
+    background: url('/images/input-time5.png') 0 bottom no-repeat;
+}
+
+
+.input-time:hover {
+    background: url('/images/input-time1.png') 0 bottom no-repeat;
+}
+
+.input-time:active {
+    background: url('/images/input-time2.png') 0 bottom no-repeat;
+}
+
+
+.file-box-l{
+    float:left;
+    margin:0;
+    padding:0;
+    width:158px;
+}
+
+.fild-box-r{
+    height:30px;
+    margin:0 0 0 10px;
+    float:left;
+    padding:0;
+}
+
+/* 按钮样式 */
+.ztpz-htq {
+    width: 72%;
+    height: 100%;
+    background-color: #000308;
+    float: left;
+    position: relative;
+}
+
+.ztpz-htq-box1 {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.htq-box-button {
+    width: 463px;
+    height: 38px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+.htq-box-button-box{
+    width:100%;
+    height:100%;
+    position: relative;
+    overflow: hidden;
+    background: url('/module/topo/images/ztpztoolbar/button-bg.png') 0 0 no-repeat;
+}
+
+.htq-bt-save, .htq-bt-default, .htq-bt-edit, .htq-bt-clean, .htq-bt-zoomin, .htq-bt-zoomout, .htq-bt-up, .htq-bt-down, .htq-bt-left, .htq-bt-right, .htq-bt-reload{
+    width:31px;
+    height:28px;
+    overflow:Hidden;
+    position: absolute;
+    left:9px;
+    top:5px;
+}
+
+.htq-bt-default{
+    left:56px;
+}
+
+.htq-bt-edit{
+    left:104px;
+}
+
+.htq-bt-clean{
+    left:138px;
+}
+
+.htq-bt-zoomin{
+    left:184px;
+}
+
+.htq-bt-zoomout{
+    left:220px;
+}
+
+.htq-bt-up{
+    left:265px;
+}
+
+.htq-bt-down{
+    left:303px;
+}
+
+.htq-bt-left{
+    left:341px;
+}
+
+.htq-bt-right{
+    left:378px;
+}
+
+.htq-bt-reload{
+    left:422px;
+}
+
+.htq-save, .htq-default, .htq-edit, .htq-clean, .htq-zoomin, .htq-zoomout, .htq-up, .htq-down, .htq-left, .htq-right, .htq-reload{
+    width:31px;
+    height:28px;
+    border: none;
+    background: url('/module/topo/images/ztpztoolbar/htq-save.png') 0 0 no-repeat;
+    cursor: pointer;
+}
+
+.htq-save:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-save1.png') 0 0 no-repeat;
+}
+
+.htq-save:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-save2.png') 0 0 no-repeat;
+}
+
+.htq-default{
+    background: url('/module/topo/images/ztpztoolbar/htq-default.png') 0 0 no-repeat;
+}
+
+.htq-default:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-default1.png') 0 0 no-repeat;
+}
+
+.htq-default:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-default2.png') 0 0 no-repeat;
+}
+
+.htq-edit{
+    background: url('/module/topo/images/ztpztoolbar/htq-edit.png') 0 0 no-repeat;
+}
+
+.htq-edit:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-edit1.png') 0 0 no-repeat;
+}
+
+.htq-edit:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-edit2.png') 0 0 no-repeat;
+}
+
+.htq-clean{
+    background: url('/module/topo/images/ztpztoolbar/htq-clean.png') 0 0 no-repeat;
+}
+
+.htq-clean:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-clean1.png') 0 0 no-repeat;
+}
+
+.htq-clean:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-clean2.png') 0 0 no-repeat;
+}
+
+.htq-zoomin{
+    background: url('/module/topo/images/ztpztoolbar/htq-zoomin.png') 0 0 no-repeat;
+}
+
+.htq-zoomin:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-zoomin1.png') 0 0 no-repeat;
+}
+
+.htq-zoomin:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-zoomin2.png') 0 0 no-repeat;
+}
+
+.htq-zoomout{
+    background: url('/module/topo/images/ztpztoolbar/htq-zoomout.png') 0 0 no-repeat;
+}
+
+.htq-zoomout:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-zoomout1.png') 0 0 no-repeat;
+}
+
+.htq-zoomout:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-zoomout2.png') 0 0 no-repeat;
+}
+
+.htq-up{
+    background: url('/module/topo/images/ztpztoolbar/htq-up.png') 0 0 no-repeat;
+}
+
+.htq-up:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-up1.png') 0 0 no-repeat;
+}
+
+.htq-up:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-up2.png') 0 0 no-repeat;
+}
+
+.htq-down{
+    background: url('/module/topo/images/ztpztoolbar/htq-down.png') 0 0 no-repeat;
+}
+
+.htq-down:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-down1.png') 0 0 no-repeat;
+}
+
+.htq-down:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-down2.png') 0 0 no-repeat;
+}
+
+.htq-left{
+    background: url('/module/topo/images/ztpztoolbar/htq-left.png') 0 0 no-repeat;
+}
+
+.htq-left:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-left1.png') 0 0 no-repeat;
+}
+
+.htq-left:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-left2.png') 0 0 no-repeat;
+}
+
+.htq-right{
+    background: url('/module/topo/images/ztpztoolbar/htq-right.png') 0 0 no-repeat;
+}
+
+.htq-right:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-right1.png') 0 0 no-repeat;
+}
+
+.htq-right:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-right2.png') 0 0 no-repeat;
+}
+
+.htq-reload{
+    width: 21px;
+    height: 21px;
+    background: url('/module/topo/images/ztpztoolbar/htq-reload.png') 0 0 no-repeat;
+}
+
+.htq-reload:hover{
+    background: url('/module/topo/images/ztpztoolbar/htq-reload1.png') 0 0 no-repeat;
+}
+
+.htq-reload:active{
+    background: url('/module/topo/images/ztpztoolbar/htq-reload2.png') 0 0 no-repeat;
+}
+.reload-box{
+    position: absolute;
+    width:21px;
+    height:21px;
+    left:100px;
+    top:4px;
+}
+
+
+
+.fourfont-buttonbg, .sixfont-buttonbg, .fourfont-buttonbg1, .fourfont-buttonbg2 {
+	font-size: 18px;
+	color: #a3dbfc;
+	background: url('/images/zhixing-bt.png') 0 0 no-repeat;
+	border: none;
+	width: 99px;
+	height: 35px;
+	overflow: hidden;
+	line-height: 29px;
+	margin-top: 7px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.fourfont-buttonbg1{
+    float:left;
+    margin:0 0 0 10px;
+    padding:0;
+}
+
+.fourfont-buttonbg2{
+    margin:0 0 0 10px;
+    padding:0;
+}
+
+.fourfont-buttonbg:hover {
+    background: url('/images/zhixing-bt1.png') 0 0 no-repeat;
+    
+}
+
+.fourfont-buttonbg:active {
+    background: url('/images/zhixing-bt2.png') 0 0 no-repeat;
+}
+
+.fourfont-buttonbg1:hover{
+	 background: url('/images/zhixing-bt1.png') 0 0 no-repeat;
+}
+.fourfont-buttonbg1:active{
+	 background: url('/images/zhixing-bt2.png') 0 0 no-repeat;
+}
+
+
+/*2015.0317*/
+.lock_input {
+	border: 1px solid #247ED3;
+	background-color: #001F41;
+	color: #4aa3dc;
+	height: 28px;
+	width:240px;
+	margin-left:10px;
+	font-size:16px;
+	font-family: '微软雅黑', '宋体';
+	padding-left: 5px;
+}
+
+.lock_label {
+	color:#d8d8d8;
+	font-size:16px;
+	margin-left:10px;
+	font-family: '微软雅黑', '宋体';
+}
+
+#rightcheck , #devsignallock{
+	margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+
+
+#forbidcontrol , #forbidalarm{
+	margin-left: 10px;
+	margin-right: -5px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	position: absolute;
+	right: .3em;
+	top: 50%;
+	width: 50px;
+	margin: -25px 5px 0 0;
+	padding: 1px;
+	height: 30px;
+	display: none;
+}
