@@ -157,12 +157,12 @@
          * 关卡设置
          */
         var checkPoint = function () {
-            var p = 10;
+            var p = point;
             var r = Math.round(256 * Math.random()),
-                    g = Math.round(256 * Math.random()),
-                    b = Math.round(256 * Math.random());
+                g = Math.round(256 * Math.random()),
+                b = Math.round(256 * Math.random());
             var eCol = Math.floor(Math.random() * p),
-                    eRow = Math.floor(Math.random() * p);
+                eRow = Math.floor(Math.random() * p);
             renderColorBox(p, r, g, b, eCol, eRow);
         };
 

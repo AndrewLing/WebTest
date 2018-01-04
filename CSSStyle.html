@@ -177,9 +177,34 @@
             background: #27ff00;
         }
 
+        input[type='checkbox']+label::before {
+            content:'\a0';/*不换行空格*/
+            display: inline-block;
+            vertical-align: 0.2em;
+            width:0.8em;
+            height:0.8em;
+            margin-right: .2em;
+            border-radius:.2em;
+            background: silver;/*复选框的背景色*/
+            text-indent:0.15em;
+            line-height: 0.65;
+        }
+        input[type='checkbox'] {
+            /*隐藏掉原先实际的 checkbox 框，之所以没用 display:none; 这种简单直接的方式，是因为这种方法会把它从键盘 tab 键切换焦点的队列中完全删除*/
+            position: absolute;
+            clip:rect(0,0,0,0);
+        }
+        input[type='checkbox']:checked+label::before {
+            /*content:'\2713'; !*对号的 Unicode字符*!*/
+            content:'\00a0'; /*对号的 Unicode字符*/
+            background: yellowgreen;/*对号的颜色*/
+        }
     </style>
 </head>
 <body>
+<input type="checkbox" id="awesome">
+<label for="awesome">Awesome!</label>
+
 <h1>这是标题 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</h1>
 
 <p>
@@ -207,7 +232,7 @@
 <label style="text-align: center; display: block; cursor: pointer;">asfasdfasdfasdf <input type="radio" name="a"/></label>
 <label style="text-align: center; display: block; cursor: pointer;">asfasdfasdfasdf <input type="radio" name="a"/></label>
 
-<img src="##" alt="无图片" onerror="src='./images/transparent.png';onerror=null;" style="width: 256px; height: 256px;"/>
+<img src="#" alt="无图片" onerror="src='./images/transparent.png';onerror=null;" style="width: 256px; height: 256px;"/>
 
 <ul class="test-list">
     <li><span>*</span>1</li>
@@ -233,20 +258,6 @@
 
 <div class="ani-rotate" style="position: absolute; top: 50%; left: 45%; width: 100px; height: 100px;">
     <img src="./images/noyobo/map-qh.png" width="120"/>
-</div>
-
-<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0">
-    <div style="position: absolute; width: 800px; height: 500px; left: 300px; top: 300px; background-color: #ccc; transform: translate(0, 0);">
-        <div style="position: relative; max-height: 250px; overflow: auto;">
-            <table style="position: relative;">
-            <tr>
-                <td style="position: relative;">
-                    <div style="position: fixed; width: 120px; height: 480px; top: 0px; left: 120px; background-color: red;"></div>
-                </td>
-            </tr>
-            </table>
-        </div>
-    </div>
 </div>
 
 </body>
